@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Fashion - Modern Minimalist Fashion</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#ffffff'
+                    },
+                    borderRadius: {
+                        'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px',
+                        'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+        body.overflow-hidden { overflow: hidden; }
+        body { font-family: 'Lato', 'sans-serif'; }
+        .font-serif { font-family: 'Cormorant Garamond', 'serif'; }
+        .product-card { transition: all 0.3s ease; cursor: pointer; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+        .product-card:hover .view-details-btn { opacity: 1; transform: translateY(0); }
+        .view-details-btn { opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .category-pill { transition: all 0.3s ease; }
+        .category-pill:hover { background-color: #f5f5f5; }
+        .category-pill.active { background-color: #000000; color: #ffffff; border-color: #000000; }
+        .hero-bg {
+            background-image: url('https://readdy.ai/api/search-image?query=elegant%20minimalist%20fashion%20model%20wearing%20luxury%20black%20and%20white%20clothing%20in%20a%20modern%20studio%20with%20soft%20natural%20lighting%20and%20clean%20white%20background%2C%20high%20fashion%20photography%2C%20sophisticated%20aesthetic%2C%20premium%20quality&width=1920&height=800&seq=hero001&orientation=landscape');
+            background-size: cover; background-position: center;
+        }
+        .modal, #cart-overlay, #checkout-overlay { transition: opacity 0.3s ease; }
+        #cart-panel, #checkout-modal-panel { transition: transform 0.3s ease-in-out; }
+        .size-btn { transition: all 0.2s ease; }
+        .size-btn.selected { background-color: #000000; color: #ffffff; border-color: #000000; }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white shadow-sm z-40">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="#" class="text-3xl font-bold font-serif text-black">LUXE</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-black hover:text-gray-600 font-medium transition-colors">Home</a>
+                    <a href="#shop" class="text-black hover:text-gray-600 font-medium transition-colors">Shop</a>
+                    <a href="#" class="text-black hover:text-gray-600 font-medium transition-colors">About</a>
+                    <a href="#" class="text-black hover:text-gray-600 font-medium transition-colors">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                     <button id="cart-button" class="relative w-8 h-8 flex items-center justify-center">
+                        <i class="ri-shopping-bag-line text-xl text-black"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg h-screen flex items-center justify-center relative mt-16">
+        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+        <div class="relative z-10 text-center text-white max-w-4xl px-6">
+            <h2 class="text-6xl md:text-8xl font-serif mb-6">Timeless Elegance</h2>
+            <p class="text-xl md:text-2xl font-light mb-8 max-w-2xl mx-auto">Discover our curated collection of minimalist fashion pieces that define modern luxury</p>
+            <a href="#shop" class="bg-white text-black px-8 py-4 !rounded-button font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Collection</a>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <main id="shop" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="py-8 sticky top-16 bg-white z-20">
+                <h2 class="text-center text-5xl font-serif mb-8">Our Collections</h2>
+                <div class="flex flex-wrap gap-4 justify-center" id="category-filters"></div>
+            </div>
+            <div id="product-display-area"></div>
+        </div>
+    </main>
+    
+    <!-- Newsletter Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <h3 class="text-5xl font-serif text-black mb-4">Stay in Touch</h3>
+            <p class="text-gray-600 text-lg mb-8">Subscribe to our newsletter for exclusive access to new collections and special offers</p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 border border-gray-200 !rounded-button focus:outline-none focus:border-black transition-colors">
+                <button class="bg-black text-white px-8 py-3 !rounded-button font-medium hover:bg-gray-800 transition-colors whitespace-nowrap">Subscribe</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-3xl font-bold font-serif text-black mb-4">LUXE</h4>
+                    <p class="text-gray-600 mb-6">Redefining modern luxury through timeless minimalist design and exceptional quality.</p>
+                </div>
+                <div>
+                    <h5 class="font-medium text-black mb-4 text-lg">Shop</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#category-dresses" class="text-gray-600 hover:text-black transition-colors">Dresses</a></li>
+                        <li><a href="#category-outerwear" class="text-gray-600 hover:text-black transition-colors">Outerwear</a></li>
+                        <li><a href="#category-shirts-&-blouses" class="text-gray-600 hover:text-black transition-colors">Shirts & Blouses</a></li>
+                        <li><a href="#category-trousers-&-skirts" class="text-gray-600 hover:text-black transition-colors">Trousers & Skirts</a></li>
+                        <li><a href="#category-accessories" class="text-gray-600 hover:text-black transition-colors">Accessories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-medium text-black mb-4 text-lg">Support</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-black transition-colors">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-black transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-black transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-medium text-black mb-4 text-lg">Company</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-black transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-black transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 mt-12 pt-8 text-center">
+                <p class="text-gray-600 text-sm">© 2024 LUXE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center opacity-0 pointer-events-none">
+        <div class="bg-white rounded-lg overflow-hidden max-w-4xl w-full m-4 transform scale-95 transition-transform duration-300">
+            <div class="p-4 flex justify-end">
+                <button id="close-modal-btn" class="text-gray-600 hover:text-black"><i class="ri-close-line text-2xl"></i></button>
+            </div>
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 p-4"><img id="modal-product-image" src="" alt="Product Image" class="w-full h-full object-cover rounded-lg"></div>
+                <div class="md:w-1/2 p-8 flex flex-col justify-center">
+                    <h2 id="modal-product-name" class="text-4xl font-serif mb-4"></h2>
+                    <p id="modal-product-price" class="text-3xl text-gray-800 mb-6"></p>
+                    <p class="text-gray-600 mb-6 font-light">This timeless piece is crafted from the finest materials to ensure both comfort and durability. A perfect blend of modern minimalism and classic elegance.</p>
+                    <div class="mb-6">
+                        <label class="font-medium text-lg mb-3 block">Size:</label>
+                        <div id="modal-size-container" class="flex items-center gap-3">
+                            <button class="size-btn border rounded-lg w-12 h-12 font-medium" data-size="S">S</button>
+                            <button class="size-btn border rounded-lg w-12 h-12 font-medium" data-size="M">M</button>
+                            <button class="size-btn border rounded-lg w-12 h-12 font-medium" data-size="L">L</button>
+                            <button class="size-btn border rounded-lg w-12 h-12 font-medium" data-size="XL">XL</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <label for="modal-quantity" class="font-medium text-lg">Quantity:</label>
+                        <input type="number" id="modal-quantity" value="1" min="1" class="w-20 border border-gray-300 rounded-lg p-2 text-center">
+                    </div>
+                    <button id="modal-add-to-cart-btn" class="w-full bg-black text-white py-3 !rounded-button font-medium hover:bg-gray-800 transition-colors">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Panel -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 opacity-0 pointer-events-none"></div>
+    <div id="cart-panel" class="fixed inset-y-0 right-0 w-full max-w-md bg-white z-[60] shadow-2xl transform translate-x-full flex flex-col">
+        <div class="flex justify-between items-center p-6 border-b"><h2 class="text-3xl font-serif">Your Cart</h2><button id="close-cart-btn" class="text-gray-600 hover:text-black"><i class="ri-close-line text-3xl"></i></button></div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-6"><p id="empty-cart-msg" class="text-center text-gray-500">Your cart is currently empty.</p></div>
+        <div class="p-6 border-t bg-gray-50">
+            <div class="flex justify-between items-center mb-4 font-medium"><span class="text-lg">Subtotal</span><span id="cart-subtotal" class="text-lg font-bold">$0.00</span></div>
+            <button id="proceed-to-checkout-btn" class="w-full bg-black text-white py-3 !rounded-button font-medium hover:bg-gray-800 transition-colors">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Details Modal -->
+    <div id="checkout-modal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center opacity-0 pointer-events-none">
+        <div id="checkout-modal-panel" class="bg-white rounded-lg overflow-hidden max-w-lg w-full m-4 transform scale-95 transition-transform duration-300">
+            <div class="p-4 flex justify-end">
+                <button id="close-checkout-modal-btn" class="text-gray-600 hover:text-black"><i class="ri-close-line text-2xl"></i></button>
+            </div>
+            <div class="p-8">
+                <h2 class="text-3xl font-serif mb-6 text-center">Enter Your Details</h2>
+                <form id="checkout-form" class="space-y-4">
+                    <div>
+                        <label for="customer-name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="customer-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    </div>
+                    <div>
+                        <label for="customer-email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="customer-email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    </div>
+                    <div>
+                        <label for="customer-phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                        <input type="tel" id="customer-phone" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    </div>
+                    <div>
+                        <label for="customer-address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <textarea id="customer-address" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required></textarea>
+                    </div>
+                    <button type="submit" id="pay-now-btn" class="w-full bg-black text-white py-3 !rounded-button font-medium hover:bg-gray-800 transition-colors">Pay Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script id="product-data">
+        const categorizedProducts = {
+            "Dresses": [
+                { id: 1, name: 'Elegant Black Dress', price: '$250', imageUrl: 'https://readdy.ai/api/search-image?query=elegant%20black%20dress%20on%20white%20background&width=400&height=500&seq=dress001' },
+                { id: 2, name: 'Summer Floral Dress', price: '$180', imageUrl: 'https://readdy.ai/api/search-image?query=summer%20floral%20dress%20on%20white%20background&width=400&height=500&seq=dress002' },
+                { id: 3, name: 'Red Cocktail Dress', price: '$320', imageUrl: 'https://readdy.ai/api/search-image?query=red%20cocktail%20dress%20on%20white%20background&width=400&height=500&seq=dress003' },
+                { id: 4, name: 'White Linen Dress', price: '$210', imageUrl: 'https://readdy.ai/api/search-image?query=white%20linen%20dress%20on%20white%20background&width=400&height=500&seq=dress004' },
+                { id: 5, name: 'Blue Maxi Dress', price: '$280', imageUrl: 'https://readdy.ai/api/search-image?query=blue%20maxi%20dress%20on%20white%20background&width=400&height=500&seq=dress005' },
+                { id: 6, name: 'Green Silk Gown', price: '$450', imageUrl: 'https://readdy.ai/api/search-image?query=green%20silk%20dress%20on%20white%20background&width=400&height=500&seq=dress006' },
+                { id: 7, name: 'Yellow Sundress', price: '$160', imageUrl: 'https://readdy.ai/api/search-image?query=yellow%20sundress%20on%20white%20background&width=400&height=500&seq=dress007' },
+                { id: 8, name: 'Purple Evening Gown', price: '$600', imageUrl: 'https://readdy.ai/api/search-image?query=purple%20evening%20gown%20on%20white%20background&width=400&height=500&seq=dress008' },
+                { id: 51, name: 'Satin Slip Dress', price: '$220', imageUrl: 'https://readdy.ai/api/search-image?query=satin%20slip%20dress%20on%20white%20background&width=400&height=500&seq=dress009' },
+                { id: 52, name: 'Knit Bodycon Dress', price: '$190', imageUrl: 'https://readdy.ai/api/search-image?query=knit%20bodycon%20dress%20on%20white%20background&width=400&height=500&seq=dress010' },
+            ],
+            "Outerwear": [
+                { id: 17, name: 'Minimalist Wool Coat', price: '$298', imageUrl: 'https://readdy.ai/api/search-image?query=minimalist%20black%20wool%20coat&width=400&height=500&seq=product001' },
+                { id: 53, name: 'Classic Trench Coat', price: '$350', imageUrl: 'https://readdy.ai/api/search-image?query=classic%20trench%20coat%20on%20white%20background&width=400&height=500&seq=outer001' },
+                { id: 54, name: 'Leather Biker Jacket', price: '$480', imageUrl: 'https://readdy.ai/api/search-image?query=leather%20biker%20jacket%20on%20white%20background&width=400&height=500&seq=outer002' },
+                { id: 55, name: 'Puffer Down Jacket', price: '$270', imageUrl: 'https://readdy.ai/api/search-image?query=puffer%20down%20jacket%20on%20white%20background&width=400&height=500&seq=outer003' },
+                { id: 56, name: 'Denim Jacket', price: '$150', imageUrl: 'https://readdy.ai/api/search-image?query=denim%20jacket%20on%20white%20background&width=400&height=500&seq=outer004' },
+                { id: 57, name: 'Cashmere Cardigan', price: '$320', imageUrl: 'https://readdy.ai/api/search-image?query=cashmere%20cardigan%20on%20white%20background&width=400&height=500&seq=outer005' },
+                { id: 58, name: 'Oversized Blazer', price: '$210', imageUrl: 'https://readdy.ai/api/search-image?query=oversized%20blazer%20on%20white%20background&width=400&height=500&seq=outer006' },
+                { id: 59, name: 'Quilted Vest', price: '$140', imageUrl: 'https://readdy.ai/api/search-image?query=quilted%20vest%20on%20white%20background&width=400&height=500&seq=outer007' },
+                { id: 60, name: 'Wool Peacoat', price: '$310', imageUrl: 'https://readdy.ai/api/search-image?query=wool%20peacoat%20on%20white%20background&width=400&height=500&seq=outer008' },
+                { id: 61, name: 'Bomber Jacket', price: '$195', imageUrl: 'https://readdy.ai/api/search-image?query=bomber%20jacket%20on%20white%20background&width=400&height=500&seq=outer009' },
+            ],
+            "Shirts & Blouses": [
+                { id: 9, name: 'Elegant Silk Blouse', price: '$189', imageUrl: 'https://readdy.ai/api/search-image?query=elegant%20white%20silk%20blouse%20on%20white%20background&width=400&height=500&seq=product002' },
+                { id: 10, name: 'Cotton Dress Shirt', price: '$145', imageUrl: 'https://readdy.ai/api/search-image?query=modern%20white%20dress%20shirt%20on%20white%20background&width=400&height=500&seq=product007' },
+                { id: 11, name: 'Linen Button-Up', price: '$130', imageUrl: 'https://readdy.ai/api/search-image?query=mens%20linen%20shirt%20on%20white%20background&width=400&height=500&seq=shirt003' },
+                { id: 12, name: 'Flannel Plaid Shirt', price: '$95', imageUrl: 'https://readdy.ai/api/search-image?query=flannel%20plaid%20shirt%20on%20white%20background&width=400&height=500&seq=shirt004' },
+                { id: 62, name: 'Satin Cami Top', price: '$80', imageUrl: 'https://readdy.ai/api/search-image?query=satin%20cami%20top%20on%20white%20background&width=400&height=500&seq=shirt005' },
+                { id: 63, name: 'Polo Shirt', price: '$110', imageUrl: 'https://readdy.ai/api/search-image?query=polo%20shirt%20on%20white%20background&width=400&height=500&seq=shirt006' },
+                { id: 64, name: 'Turtleneck Sweater', price: '$150', imageUrl: 'https://readdy.ai/api/search-image?query=turtleneck%20sweater%20on%20white%20background&width=400&height=500&seq=shirt007' },
+                { id: 65, name: 'Graphic T-Shirt', price: '$65', imageUrl: 'https://readdy.ai/api/search-image?query=graphic%20t-shirt%20on%20white%20background&width=400&height=500&seq=shirt008' },
+                { id: 66, name: 'Ruffled Blouse', price: '$165', imageUrl: 'https://readdy.ai/api/search-image?query=ruffled%20blouse%20on%20white%20background&width=400&height=500&seq=shirt009' },
+                { id: 67, name: 'Henley Shirt', price: '$85', imageUrl: 'https://readdy.ai/api/search-image?query=henley%20shirt%20on%20white%20background&width=400&height=500&seq=shirt010' },
+            ],
+            "Trousers & Skirts": [
+                { id: 13, name: 'Tailored Trousers', price: '$225', imageUrl: 'https://readdy.ai/api/search-image?query=classic%20black%20tailored%20trousers%20on%20white%20background&width=400&height=500&seq=product004' },
+                { id: 16, name: 'Wide-Leg Pants', price: '$240', imageUrl: 'https://readdy.ai/api/search-image?query=womens%20wide-leg%20pants%20on%20white%20background&width=400&height=500&seq=trouser004' },
+                { id: 68, name: 'Slim-Fit Chinos', price: '$150', imageUrl: 'https://readdy.ai/api/search-image?query=mens%20chinos%20on%20white%20background&width=400&height=500&seq=trouser003' },
+                { id: 69, name: 'A-Line Skirt', price: '$140', imageUrl: 'https://readdy.ai/api/search-image?query=a-line%20skirt%20on%20white%20background&width=400&height=500&seq=trouser005' },
+                { id: 70, name: 'Pleated Midi Skirt', price: '$180', imageUrl: 'https://readdy.ai/api/search-image?query=pleated%20midi%20skirt%20on%20white%20background&width=400&height=500&seq=trouser006' },
+                { id: 71, name: 'High-Waisted Jeans', price: '$190', imageUrl: 'https://readdy.ai/api/search-image?query=high-waisted%20jeans%20on%20white%20background&width=400&height=500&seq=trouser007' },
+                { id: 72, name: 'Cargo Pants', price: '$160', imageUrl: 'https://readdy.ai/api/search-image?query=cargo%20pants%20on%20white%20background&width=400&height=500&seq=trouser008' },
+                { id: 73, name: 'Pencil Skirt', price: '$155', imageUrl: 'https://readdy.ai/api/search-image?query=pencil%20skirt%20on%20white%20background&width=400&height=500&seq=trouser009' },
+                { id: 74, name: 'Linen Shorts', price: '$110', imageUrl: 'https://readdy.ai/api/search-image?query=linen%20shorts%20on%20white%20background&width=400&height=500&seq=trouser010' },
+                { id: 75, name: 'Jogger Pants', price: '$130', imageUrl: 'https://readdy.ai/api/search-image?query=jogger%20pants%20on%20white%20background&width=400&height=500&seq=trouser011' },
+            ],
+            "Accessories": [
+                { id: 18, name: 'Leather Handbag', price: '$445', imageUrl: 'https://readdy.ai/api/search-image?query=modern%20black%20leather%20handbag&width=400&height=500&seq=product003' },
+                { id: 76, name: 'Leather Boots', price: '$385', imageUrl: 'https://readdy.ai/api/search-image?query=luxury%20black%20leather%20boots&width=400&height=500&seq=product008' },
+                { id: 77, name: 'Minimalist Sneakers', price: '$165', imageUrl: 'https://readdy.ai/api/search-image?query=minimalist%20white%20sneakers&width=400&height=500&seq=acc001' },
+                { id: 78, name: 'Silk Scarf', price: '$95', imageUrl: 'https://readdy.ai/api/search-image?query=silk%20scarf%20on%20white%20background&width=400&height=500&seq=acc002' },
+                { id: 79, name: 'Leather Belt', price: '$120', imageUrl: 'https://readdy.ai/api/search-image?query=leather%20belt%20on%20white%20background&width=400&height=500&seq=acc003' },
+                { id: 80, name: 'Sunglasses', price: '$180', imageUrl: 'https://readdy.ai/api/search-image?query=sunglasses%20on%20white%20background&width=400&height=500&seq=acc004' },
+                { id: 81, name: 'Wool Beanie', price: '$70', imageUrl: 'https://readdy.ai/api/search-image?query=wool%20beanie%20on%20white%20background&width=400&height=500&seq=acc005' },
+                { id: 82, name: 'Canvas Tote Bag', price: '$135', imageUrl: 'https://readdy.ai/api/search-image?query=canvas%20tote%20bag%20on%20white%20background&width=400&height=500&seq=acc006' },
+                { id: 83, name: 'Gold Necklace', price: '$250', imageUrl: 'https://readdy.ai/api/search-image?query=gold%20necklace%20on%20white%20background&width=400&height=500&seq=acc007' },
+                { id: 84, name: 'Leather Loafers', price: '$280', imageUrl: 'https://readdy.ai/api/search-image?query=leather%20loafers%20on%20white%20background&width=400&height=500&seq=acc008' },
+            ]
+        };
+    </script>
+
+    <script id="main-script">
+        const RAZORPAY_KEY_ID = "YOUR_RAZORPAY_KEY_ID"; // Replace with your actual Razorpay Key ID
+        const FIREBASE_PROJECT_ID = "YOUR_PROJECT_ID"; // Replace with your actual Firebase Project ID
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let cart = [];
+            let currentProduct = null;
+            let selectedSize = null;
+            
+            const allSelectors = {
+                cartButton: document.getElementById('cart-button'),
+                cartPanel: document.getElementById('cart-panel'),
+                cartOverlay: document.getElementById('cart-overlay'),
+                closeCartBtn: document.getElementById('close-cart-btn'),
+                cartBadge: document.getElementById('cart-badge'),
+                cartItemsContainer: document.getElementById('cart-items-container'),
+                emptyCartMsg: document.getElementById('empty-cart-msg'),
+                cartSubtotalEl: document.getElementById('cart-subtotal'),
+                modal: document.getElementById('product-modal'),
+                modalAddToCartBtn: document.getElementById('modal-add-to-cart-btn'),
+                modalSizeContainer: document.getElementById('modal-size-container'),
+                productDisplayArea: document.getElementById('product-display-area'),
+                categoryFiltersContainer: document.getElementById('category-filters'),
+                modalProductName: document.getElementById('modal-product-name'),
+                modalProductPrice: document.getElementById('modal-product-price'),
+                modalProductImage: document.getElementById('modal-product-image'),
+                modalQuantity: document.getElementById('modal-quantity'),
+                
+                // Checkout Modal Selectors
+                proceedToCheckoutBtn: document.getElementById('proceed-to-checkout-btn'),
+                checkoutModal: document.getElementById('checkout-modal'),
+                checkoutModalPanel: document.getElementById('checkout-modal-panel'),
+                closeCheckoutModalBtn: document.getElementById('close-checkout-modal-btn'),
+                checkoutForm: document.getElementById('checkout-form'),
+                customerName: document.getElementById('customer-name'),
+                customerEmail: document.getElementById('customer-email'),
+                customerPhone: document.getElementById('customer-phone'),
+                customerAddress: document.getElementById('customer-address'),
+                payNowBtn: document.getElementById('pay-now-btn')
+            };
+
+            // --- CART & MODAL FUNCTIONS (Existing) ---
+            function openCart() { /* ... unchanged ... */
+                allSelectors.cartPanel.classList.remove('translate-x-full');
+                allSelectors.cartOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeCart() { /* ... unchanged ... */
+                allSelectors.cartPanel.classList.add('translate-x-full');
+                allSelectors.cartOverlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.classList.remove('overflow-hidden');
+            }
+            
+            function updateCartBadge() { /* ... unchanged ... */
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                allSelectors.cartBadge.textContent = totalItems;
+            }
+
+            function renderCart() { /* ... unchanged ... */
+                allSelectors.cartItemsContainer.innerHTML = ''; 
+                if (cart.length === 0) {
+                    allSelectors.cartItemsContainer.appendChild(allSelectors.emptyCartMsg);
+                    allSelectors.emptyCartMsg.style.display = 'block';
+                } else {
+                    allSelectors.emptyCartMsg.style.display = 'none';
+                    cart.forEach(item => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'flex gap-4 items-center';
+                        itemEl.innerHTML = `
+                            <img src="${item.imageUrl}" alt="${item.name}" class="w-24 h-24 object-cover rounded-lg">
+                            <div class="flex-1 flex flex-col">
+                                <h3 class="font-medium">${item.name}</h3>
+                                <p class="text-sm text-gray-500">Size: ${item.size}</p>
+                                <p class="text-gray-600 mt-1">${item.price}</p>
+                                <div class="flex items-center mt-2">
+                                    <div class="flex items-center border rounded-lg">
+                                        <button data-id="${item.id}" data-size="${item.size}" class="cart-quantity-btn decrease px-2 py-1">-</button>
+                                        <span class="px-3">${item.quantity}</span>
+                                        <button data-id="${item.id}" data-size="${item.size}" class="cart-quantity-btn increase px-2 py-1">+</button>
+                                    </div>
+                                    <button data-id="${item.id}" data-size="${item.size}" class="cart-remove-btn text-red-500 hover:text-red-700 ml-auto font-medium">Remove</button>
+                                </div>
+                            </div>
+                        `;
+                        allSelectors.cartItemsContainer.appendChild(itemEl);
+                    });
+                }
+                const subtotal = cart.reduce((sum, item) => sum + (parseFloat(item.price.replace('$', '')) * item.quantity), 0);
+                allSelectors.cartSubtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+                updateCartBadge();
+            }
+
+            function addToCart(product, quantity, size) { /* ... unchanged ... */
+                const existingItem = cart.find(item => item.id === product.id && item.size === size);
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    cart.push({ ...product, quantity, size });
+                }
+                renderCart();
+            }
+
+            function handleCartInteraction(e) { /* ... unchanged ... */
+                const target = e.target;
+                if (!target.matches('.cart-quantity-btn, .cart-remove-btn')) return;
+
+                const productId = parseInt(target.dataset.id, 10);
+                const productSize = target.dataset.size;
+                if (!productId || !productSize) return;
+
+                const itemIndex = cart.findIndex(item => item.id === productId && item.size === productSize);
+                if (itemIndex === -1) return;
+
+                if (target.matches('.cart-quantity-btn.increase')) {
+                    cart[itemIndex].quantity++;
+                } else if (target.matches('.cart-quantity-btn.decrease')) {
+                    cart[itemIndex].quantity > 1 ? cart[itemIndex].quantity-- : cart.splice(itemIndex, 1);
+                } else if (target.matches('.cart-remove-btn')) {
+                    cart.splice(itemIndex, 1);
+                }
+                renderCart();
+            }
+            
+            function openProductModal(product) { /* Renamed to differentiate from checkout modal */
+                currentProduct = product;
+                selectedSize = null;
+                allSelectors.modalSizeContainer.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+                const modalContent = allSelectors.modal.querySelector('.transform');
+                allSelectors.modalProductName.textContent = product.name;
+                allSelectors.modalProductPrice.textContent = product.price;
+                allSelectors.modalProductImage.src = product.imageUrl;
+                allSelectors.modalQuantity.value = 1;
+                allSelectors.modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95');
+            }
+
+            function closeProductModal() { /* Renamed */
+                const modalContent = allSelectors.modal.querySelector('.transform');
+                allSelectors.modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.add('scale-95');
+                currentProduct = null;
+                selectedSize = null;
+            }
+
+            // --- CHECKOUT MODAL FUNCTIONS ---
+            function openCheckoutModal() {
+                if (cart.length === 0) {
+                    alert("Your cart is empty. Please add items before checking out.");
+                    return;
+                }
+                allSelectors.checkoutModal.classList.remove('opacity-0', 'pointer-events-none');
+                allSelectors.checkoutModalPanel.classList.remove('scale-95');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeCheckoutModal() {
+                allSelectors.checkoutModal.classList.add('opacity-0', 'pointer-events-none');
+                allSelectors.checkoutModalPanel.classList.add('scale-95');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            // --- RAZORPAY INTEGRATION ---
+            async function initiateRazorpayPayment() {
+                const totalAmount = parseFloat(allSelectors.cartSubtotalEl.textContent.replace('$', '')) * 100; // Amount in paise
+                
+                const customerDetails = {
+                    name: allSelectors.customerName.value,
+                    email: allSelectors.customerEmail.value,
+                    phone: allSelectors.customerPhone.value,
+                    address: allSelectors.customerAddress.value
+                };
+
+                const cartItems = cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    qty: item.quantity,
+                    price: parseFloat(item.price.replace('$', '')) * 100, // Price in paise
+                    size: item.size
+                }));
+
+                // Step 1: Create order from Firebase Cloud Function
+                try {
+                    const res = await fetch(`https://us-central1-${FIREBASE_PROJECT_ID}.cloudfunctions.net/createOrder`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            amount: totalAmount,
+                            customer: customerDetails,
+                            items: cartItems
+                        })
+                    });
+                    const order = await res.json();
+
+                    if (order.error) {
+                        alert("Error creating order: " + order.error);
+                        return;
+                    }
+
+                    // Step 2: Razorpay Checkout
+                    var options = {
+                        "key": RAZORPAY_KEY_ID, // YOUR_RAZORPAY_KEY_ID
+                        "amount": order.amount, // Amount from the Cloud Function
+                        "currency": order.currency, // Currency from the Cloud Function
+                        "name": "Luxe Fashion",
+                        "description": "Purchase Transaction",
+                        "image": "https://readdy.ai/api/search-image?query=luxury%20fashion%20logo&width=100&height=100&seq=logo", // Optional, replace with your logo URL
+                        "order_id": order.id, // Order ID from the Cloud Function
+                        "handler": async function (response) {
+                            // Step 3: Verify payment using Firebase Cloud Function
+                            try {
+                                const verifyRes = await fetch(`https://us-central1-${FIREBASE_PROJECT_ID}.cloudfunctions.net/verifyPayment`, {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({
+                                        ...response,
+                                        firestoreOrderId: order.firestoreOrderId // Pass the Firestore ID
+                                    })
+                                });
+                                const result = await verifyRes.json();
+                                if (result.success) {
+                                    alert(result.message);
+                                    cart = []; // Clear cart on success
+                                    renderCart();
+                                    closeCheckoutModal();
+                                    closeCart();
+                                } else {
+                                    alert("Payment verification failed: " + result.message);
+                                }
+                            } catch (error) {
+                                console.error("Error during payment verification:", error);
+                                alert("Payment verification failed due to an error.");
+                            }
+                        },
+                        "prefill": {
+                            "name": customerDetails.name,
+                            "email": customerDetails.email,
+                            "contact": customerDetails.phone
+                        },
+                        "notes": {
+                            "address": customerDetails.address,
+                            "firestoreOrderId": order.firestoreOrderId // Store Firestore ID in Razorpay notes
+                        },
+                        "theme": {
+                            "color": "#000000"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on('razorpay_payment_failed', function (response){
+                        alert("Payment Failed: " + response.error.code + " - " + response.error.description);
+                        // Optional: Call a Cloud Function to update order status to "Failed" in Firestore
+                    });
+                    rzp1.open();
+
+                } catch (err) {
+                    console.error("Error creating order:", err);
+                    alert("Could not initiate payment. Please try again.");
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+            allSelectors.cartButton.addEventListener('click', openCart);
+            allSelectors.closeCartBtn.addEventListener('click', closeCart);
+            allSelectors.cartOverlay.addEventListener('click', closeCart);
+            allSelectors.cartItemsContainer.addEventListener('click', handleCartInteraction);
+
+            allSelectors.modalSizeContainer.addEventListener('click', (e) => {
+                if(e.target.matches('.size-btn')) {
+                    allSelectors.modalSizeContainer.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    selectedSize = e.target.dataset.size;
+                }
+            });
+
+            allSelectors.modalAddToCartBtn.addEventListener('click', () => {
+                if (!selectedSize) {
+                    alert('Please select a size.');
+                    return;
+                }
+                if (currentProduct) {
+                    const quantity = parseInt(allSelectors.modalQuantity.value, 10);
+                    addToCart(currentProduct, quantity, selectedSize);
+                    closeProductModal(); // Close product modal
+                    // openCart(); // Optionally open cart here
+                }
+            });
+
+            document.getElementById('close-modal-btn').addEventListener('click', closeProductModal);
+            allSelectors.modal.addEventListener('click', (e) => {
+                if (e.target === allSelectors.modal) closeProductModal();
+            });
+
+            // Checkout Modal Listeners
+            allSelectors.proceedToCheckoutBtn.addEventListener('click', openCheckoutModal);
+            allSelectors.closeCheckoutModalBtn.addEventListener('click', closeCheckoutModal);
+            allSelectors.checkoutModal.addEventListener('click', (e) => {
+                if (e.target === allSelectors.checkoutModal) closeCheckoutModal();
+            });
+            allSelectors.checkoutForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+                initiateRazorpayPayment();
+            });
+
+
+            // --- INITIAL PAGE RENDER ---
+            Object.entries(categorizedProducts).forEach(([category, products]) => {
+                const categoryId = `category-${category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-')}`;
+                const pill = document.createElement('a');
+                pill.href = `#${categoryId}`;
+                pill.className = 'category-pill px-6 py-3 border border-gray-300 !rounded-button font-medium whitespace-nowrap';
+                pill.textContent = category;
+                allSelectors.categoryFiltersContainer.appendChild(pill);
+                
+                const categorySection = document.createElement('section');
+                categorySection.id = categoryId;
+                categorySection.className = 'py-16';
+                categorySection.innerHTML = `<h2 class="text-4xl font-serif text-center mb-12">${category}</h2>`;
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8';
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card bg-white border border-gray-100 rounded-lg overflow-hidden';
+                    card.innerHTML = `
+                        <div class="relative"><img src="${product.imageUrl}" alt="${product.name}" class="w-full h-80 object-cover object-top"><div class="view-details-btn absolute bottom-4 left-4 right-4 bg-black text-white py-3 !rounded-button font-medium whitespace-nowrap text-center">View Details</div></div>
+                        <div class="p-4"><h3 class="font-medium text-black mb-2 text-lg">${product.name}</h3><p class="text-gray-600 font-light">${product.price}</p></div>`;
+                    card.addEventListener('click', () => openProductModal(product)); // Changed to openProductModal
+                    grid.appendChild(card);
+                });
+                categorySection.appendChild(grid);
+                allSelectors.productDisplayArea.appendChild(categorySection);
+            });
+            renderCart();
+
+            // --- SMOOTH SCROLL & ACTIVE PILL LOGIC ---
+            allSelectors.categoryFiltersContainer.addEventListener('click', function(e) {
+                if (e.target.matches('a.category-pill')) {
+                    e.preventDefault();
+                    document.querySelector(e.target.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.category-pill').forEach(pill => {
+                            pill.classList.toggle('active', pill.getAttribute('href') === `#${entry.target.id}`);
+                        });
+                    }
+                });
+            }, { rootMargin: "-30% 0px -70% 0px" });
+
+            document.querySelectorAll('#product-display-area section').forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
