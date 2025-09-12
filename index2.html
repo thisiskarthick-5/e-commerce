@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dressify - Premium Dress Collection</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#ec4899',
+secondary: '#8b5cf6'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before {
+content: "\f3c2";
+}
+.filter-panel {
+transform: translateX(-100%);
+transition: transform 0.3s ease-in-out;
+}
+.filter-panel.active {
+transform: translateX(0);
+}
+.cart-panel {
+transform: translateX(100%);
+transition: transform 0.3s ease-in-out;
+}
+.cart-panel.active {
+transform: translateX(0);
+}
+.modal {
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease-in-out;
+}
+.modal.active {
+opacity: 1;
+visibility: visible;
+}
+.product-card {
+transition: transform 0.2s ease-in-out;
+}
+.product-card:hover {
+transform: translateY(-4px);
+}
+.range-slider {
+-webkit-appearance: none;
+appearance: none;
+height: 6px;
+background: #e5e7eb;
+border-radius: 3px;
+outline: none;
+}
+.range-slider::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 20px;
+height: 20px;
+background: #ec4899;
+border-radius: 50%;
+cursor: pointer;
+}
+.range-slider::-moz-range-thumb {
+width: 20px;
+height: 20px;
+background: #ec4899;
+border-radius: 50%;
+cursor: pointer;
+border: none;
+}
+.color-swatch {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+cursor: pointer;
+border: 2px solid transparent;
+transition: all 0.2s ease;
+}
+.color-swatch.selected {
+border-color: #374151;
+transform: scale(1.1);
+}
+.notification {
+transform: translateY(-100px);
+transition: transform 0.3s ease-in-out;
+}
+.notification.show {
+transform: translateY(0);
+}
+</style>
+</head>
+<body class="bg-white">
+<!-- Notification -->
+<div id="notification" class="notification fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+<span id="notificationText">Item added to cart!</span>
+</div>
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-40 border-b border-gray-100">
+<div class="px-4 py-4">
+<div class="flex items-center justify-between">
+<!-- Logo -->
+<div class="flex items-center">
+<h1 class="text-2xl font-['Pacifico'] text-primary">Dressify</h1>
+</div>
+<!-- Search Bar (Desktop) -->
+<div class="hidden md:flex flex-1 max-w-md mx-8">
+<div class="relative w-full">
+<input type="text" id="searchInput" placeholder="Search dresses..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<!-- Right Side Icons -->
+<div class="flex items-center space-x-4">
+<!-- Filter Button (Mobile) -->
+<button id="filterToggle" class="md:hidden w-10 h-10 flex items-center justify-center text-gray-600 hover:text-primary transition-colors">
+<i class="ri-filter-line"></i>
+</button>
+<!-- Admin Button -->
+<button id="adminToggle" class="hidden md:flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 hover:text-primary transition-colors">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-admin-line"></i>
+</div>
+<span>Admin</span>
+</button>
+<!-- Cart -->
+<button id="cartToggle" class="relative w-10 h-10 flex items-center justify-center text-gray-600 hover:text-primary transition-colors">
+<i class="ri-shopping-bag-line"></i>
+<span id="cartCount" class="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+</button>
+<!-- Mobile Menu -->
+<button id="mobileMenuToggle" class="md:hidden w-10 h-10 flex items-center justify-center text-gray-600">
+<i class="ri-menu-line"></i>
+</button>
+</div>
+</div>
+<!-- Mobile Search -->
+<div class="md:hidden mt-4">
+<div class="relative">
+<input type="text" id="mobileSearchInput" placeholder="Search dresses..." class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line text-gray-400"></i>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 md:pt-20">
+<!-- Hero Section -->
+<section class="relative h-[600px] mb-16 overflow-hidden">
+<div class="absolute inset-0">
+<img src="https://readdy.ai/api/search-image?query=luxury%20fashion%20boutique%20interior%20with%20elegant%20dresses%20displayed%2C%20soft%20lighting%2C%20minimalist%20modern%20design%2C%20high-end%20retail%20space%20with%20marble%20floors%20and%20crystal%20chandeliers%2C%20clean%20and%20sophisticated%20atmosphere&width=1920&height=1080&seq=hero1&orientation=landscape" alt="Hero Background" class="w-full h-full object-cover">
+</div>
+<div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent">
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="max-w-xl">
+<h1 class="text-5xl font-bold text-gray-900 mb-6">Discover Your Perfect Style</h1>
+<p class="text-xl text-gray-600 mb-8">Explore our curated collection of elegant dresses for every occasion. From casual to formal, find your signature look.</p>
+<div class="space-x-4">
+<button class="bg-primary text-white px-8 py-3 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Shop Now</button>
+<button class="border border-gray-300 px-8 py-3 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">View Collections</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories Section -->
+<section class="container mx-auto px-4 mb-16">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
+<p class="text-gray-600">Find the perfect dress for any occasion</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="group relative h-[400px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=elegant%20evening%20gown%20on%20model%2C%20luxury%20formal%20wear%2C%20studio%20lighting%2C%20clean%20background%2C%20high%20fashion%20photography&width=600&height=800&seq=cat1&orientation=portrait" alt="Evening Gowns" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Evening Gowns</h3>
+<p class="text-sm mb-4">Make a statement at your next formal event</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+<div class="group relative h-[400px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=casual%20summer%20dress%20on%20model%2C%20light%20flowy%20fabric%2C%20natural%20daylight%2C%20outdoor%20setting%2C%20lifestyle%20fashion%20photography&width=600&height=800&seq=cat2&orientation=portrait" alt="Casual Dresses" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Casual Dresses</h3>
+<p class="text-sm mb-4">Effortless style for everyday wear</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+<div class="group relative h-[400px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=cocktail%20party%20dress%20on%20model%2C%20glamorous%20design%2C%20studio%20lighting%2C%20clean%20background%2C%20fashion%20editorial%20style&width=600&height=800&seq=cat3&orientation=portrait" alt="Party Dresses" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Party Dresses</h3>
+<p class="text-sm mb-4">Stand out at every celebration</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+<div class="group relative h-[400px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=business%20professional%20dress%20on%20model%2C%20tailored%20design%2C%20office%20setting%2C%20clean%20background%2C%20corporate%20fashion%20photography&width=600&height=800&seq=cat4&orientation=portrait" alt="Work Dresses" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Work Dresses</h3>
+<p class="text-sm mb-4">Professional style for the modern woman</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- New Arrivals Section -->
+<section class="container mx-auto px-4 mb-16">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">New Arrivals</h2>
+<p class="text-gray-600">Fresh styles just landed</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="group relative h-[500px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=elegant%20modern%20dress%20on%20model%2C%20high%20fashion%20photography%2C%20clean%20studio%20background%2C%20professional%20lighting%2C%20luxury%20fashion%20editorial%20style&width=600&height=800&seq=new1&orientation=portrait" alt="New Arrival 1" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Spring Collection</h3>
+<p class="text-sm mb-4">Starting from $89.99</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+<div class="group relative h-[500px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=trendy%20cocktail%20dress%20on%20model%2C%20fashion%20forward%20design%2C%20clean%20studio%20background%2C%20professional%20lighting%2C%20contemporary%20fashion%20editorial&width=600&height=800&seq=new2&orientation=portrait" alt="New Arrival 2" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Party Edit</h3>
+<p class="text-sm mb-4">Starting from $129.99</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+<div class="group relative h-[500px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=sophisticated%20evening%20gown%20on%20model%2C%20luxury%20formal%20wear%2C%20clean%20studio%20background%2C%20professional%20lighting%2C%20high-end%20fashion%20editorial&width=600&height=800&seq=new3&orientation=portrait" alt="New Arrival 3" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Evening Wear</h3>
+<p class="text-sm mb-4">Starting from $199.99</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+<div class="group relative h-[500px] overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=casual%20chic%20dress%20on%20model%2C%20modern%20everyday%20style%2C%20clean%20studio%20background%2C%20professional%20lighting%2C%20lifestyle%20fashion%20editorial&width=600&height=800&seq=new4&orientation=portrait" alt="New Arrival 4" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+<div class="text-white">
+<h3 class="text-xl font-semibold mb-2">Casual Collection</h3>
+<p class="text-sm mb-4">Starting from $69.99</p>
+<button class="bg-white text-gray-900 px-6 py-2 rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">Shop Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Special Offers Section -->
+<section class="bg-gray-50 py-16 mb-16">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Special Offers</h2>
+<p class="text-gray-600">Limited time deals you don't want to miss</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white rounded-lg overflow-hidden shadow-sm">
+<div class="aspect-[4/3] relative">
+<img src="https://readdy.ai/api/search-image?query=elegant%20summer%20dress%20collection%20display%2C%20fashion%20retail%20presentation%2C%20clean%20modern%20background%2C%20professional%20lighting%2C%20commercial%20fashion%20photography&width=800&height=600&seq=offer1&orientation=landscape" alt="Summer Sale" class="w-full h-full object-cover">
+<div class="absolute top-4 right-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold">Save 30%</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Summer Sale</h3>
+<p class="text-gray-600 mb-4">Get ready for summer with our exclusive collection at special prices</p>
+<button class="w-full bg-primary text-white py-2 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Shop Sale</button>
+</div>
+</div>
+<div class="bg-white rounded-lg overflow-hidden shadow-sm">
+<div class="aspect-[4/3] relative">
+<img src="https://readdy.ai/api/search-image?query=luxury%20evening%20wear%20collection%20display%2C%20high-end%20fashion%20presentation%2C%20clean%20modern%20background%2C%20professional%20lighting%2C%20editorial%20fashion%20photography&width=800&height=600&seq=offer2&orientation=landscape" alt="Evening Collection" class="w-full h-full object-cover">
+<div class="absolute top-4 right-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold">Save 25%</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Evening Collection</h3>
+<p class="text-gray-600 mb-4">Discover our stunning evening wear at special prices</p>
+<button class="w-full bg-primary text-white py-2 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Shop Collection</button>
+</div>
+</div>
+<div class="bg-white rounded-lg overflow-hidden shadow-sm">
+<div class="aspect-[4/3] relative">
+<img src="https://readdy.ai/api/search-image?query=trendy%20casual%20dress%20collection%20display%2C%20modern%20fashion%20presentation%2C%20clean%20contemporary%20background%2C%20professional%20lighting%2C%20lifestyle%20fashion%20photography&width=800&height=600&seq=offer3&orientation=landscape" alt="New Customer Offer" class="w-full h-full object-cover">
+<div class="absolute top-4 right-4 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold">Save 20%</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">New Customer Offer</h3>
+<p class="text-gray-600 mb-4">First-time customers get an extra 20% off their purchase</p>
+<button class="w-full bg-primary text-white py-2 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Get Offer</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="container mx-auto px-4 mb-16">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
+<p class="text-gray-600">Our most loved styles</p>
+</div>
+<div class="flex">
+<!-- Filter Panel -->
+<aside id="filterPanel" class="filter-panel fixed md:relative top-24 md:top-0 left-0 w-80 md:w-64 h-screen md:h-auto bg-white md:bg-transparent shadow-lg md:shadow-none z-30 overflow-y-auto">
+<div class="p-6 border-b md:border-b-0 md:border-r border-gray-100">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-semibold text-gray-900">Filters</h3>
+<button id="closeFilter" class="md:hidden w-6 h-6 flex items-center justify-center text-gray-400">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<!-- Sort -->
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+<select id="sortSelect" class="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary pr-8">
+<option value="latest">Latest</option>
+<option value="price-low">Price: Low to High</option>
+<option value="price-high">Price: High to Low</option>
+<option value="name">Name A-Z</option>
+</select>
+</div>
+<!-- Price Range -->
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-3">Price Range</label>
+<div class="space-y-3">
+<input type="range" id="priceRange" class="range-slider w-full" min="0" max="500" value="500">
+<div class="flex items-center space-x-2">
+<input type="number" id="minPrice" placeholder="Min" class="w-20 p-2 border border-gray-200 rounded text-sm" value="0">
+<span class="text-gray-400">-</span>
+<input type="number" id="maxPrice" placeholder="Max" class="w-20 p-2 border border-gray-200 rounded text-sm" value="500">
+</div>
+</div>
+</div>
+<!-- Size -->
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-3">Size</label>
+<div class="flex flex-wrap gap-2">
+<label class="flex items-center">
+<input type="checkbox" value="XS" class="size-filter sr-only">
+<span class="px-3 py-1 border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-primary transition-colors">XS</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" value="S" class="size-filter sr-only">
+<span class="px-3 py-1 border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-primary transition-colors">S</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" value="M" class="size-filter sr-only">
+<span class="px-3 py-1 border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-primary transition-colors">M</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" value="L" class="size-filter sr-only">
+<span class="px-3 py-1 border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-primary transition-colors">L</span>
+</label>
+<label class="flex items-center">
+<input type="checkbox" value="XL" class="size-filter sr-only">
+<span class="px-3 py-1 border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-primary transition-colors">XL</span>
+</label>
+</div>
+</div>
+<!-- Colors -->
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-3">Colors</label>
+<div class="flex flex-wrap gap-2">
+<div class="color-swatch bg-red-500" data-color="red"></div>
+<div class="color-swatch bg-blue-500" data-color="blue"></div>
+<div class="color-swatch bg-green-500" data-color="green"></div>
+<div class="color-swatch bg-yellow-500" data-color="yellow"></div>
+<div class="color-swatch bg-purple-500" data-color="purple"></div>
+<div class="color-swatch bg-pink-500" data-color="pink"></div>
+<div class="color-swatch bg-gray-800" data-color="black"></div>
+<div class="color-swatch bg-white border-2 border-gray-200" data-color="white"></div>
+</div>
+</div>
+<!-- Filter Actions -->
+<div class="space-y-2">
+<button id="applyFilters" class="w-full bg-primary text-white py-2 px-4 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Apply Filters</button>
+<button id="clearFilters" class="w-full border border-gray-200 text-gray-600 py-2 px-4 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">Clear All</button>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="flex-1 p-6">
+<div class="mb-6">
+<h2 class="text-2xl font-bold text-gray-900 mb-2">Premium Dress Collection</h2>
+<p class="text-gray-600">Discover our curated selection of elegant dresses</p>
+</div>
+<div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Products will be loaded here -->
+</div>
+<div class="mt-12 text-center">
+<button id="loadMore" class="bg-gray-100 text-gray-700 px-8 py-3 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">Load More</button>
+</div>
+</div>
+</div>
+<!-- Brand Story Section -->
+<section class="container mx-auto px-4 mb-16">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div class="order-2 md:order-1">
+<h2 class="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+<p class="text-gray-600 mb-6 leading-relaxed">At Dressify, we believe that every woman deserves to feel confident and beautiful in what she wears. Our journey began with a simple vision: to create stunning dresses that celebrate individuality and style.</p>
+<p class="text-gray-600 mb-8 leading-relaxed">Today, we continue to design and curate collections that combine timeless elegance with contemporary trends, ensuring that every piece tells its own unique story.</p>
+<div class="grid grid-cols-3 gap-6 text-center">
+<div>
+<div class="text-3xl font-bold text-primary mb-2">10K+</div>
+<p class="text-sm text-gray-600">Happy Customers</p>
+</div>
+<div>
+<div class="text-3xl font-bold text-primary mb-2">500+</div>
+<p class="text-sm text-gray-600">Unique Designs</p>
+</div>
+<div>
+<div class="text-3xl font-bold text-primary mb-2">50+</div>
+<p class="text-sm text-gray-600">Fashion Awards</p>
+</div>
+</div>
+</div>
+<div class="order-1 md:order-2">
+<img src="https://readdy.ai/api/search-image?query=luxury%20fashion%20atelier%20interior%2C%20elegant%20dress%20design%20studio%2C%20fashion%20workspace%20with%20sketches%20and%20fabric%20samples%2C%20clean%20modern%20aesthetic%2C%20professional%20fashion%20environment&width=800&height=600&seq=story&orientation=landscape" alt="Our Story" class="w-full h-full object-cover rounded-lg shadow-lg">
+</div>
+</div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="bg-gray-50 py-16 mb-16">
+<div class="container mx-auto px-4">
+<div class="max-w-2xl mx-auto text-center">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Stay Updated</h2>
+<p class="text-gray-600 mb-8">Subscribe to our newsletter for exclusive offers, style tips, and new arrivals</p>
+<form class="flex gap-4">
+<input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-button border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary">
+<button type="submit" class="bg-primary text-white px-8 py-3 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Subscribe</button>
+</form>
+</div>
+</div>
+</section>
+
+<!-- Customer Reviews -->
+<section class="container mx-auto px-4 mb-16">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+<p class="text-gray-600">Real reviews from fashion enthusiasts like you</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="flex-shrink-0">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20smiling%20young%20woman%2C%20clean%20background%2C%20natural%20lighting%2C%20warm%20and%20friendly%20expression&width=100&height=100&seq=review1&orientation=squarish" alt="Customer" class="w-12 h-12 rounded-full object-cover">
+</div>
+<div class="ml-4">
+<h4 class="font-semibold text-gray-900">Isabella Thompson</h4>
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+</div>
+</div>
+<p class="text-gray-600">"The quality of the dresses is exceptional! I ordered a cocktail dress for a wedding and received so many compliments. The fit was perfect and the delivery was quick."</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="flex-shrink-0">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20confident%20middle-aged%20woman%2C%20clean%20background%2C%20natural%20lighting%2C%20sophisticated%20expression&width=100&height=100&seq=review2&orientation=squarish" alt="Customer" class="w-12 h-12 rounded-full object-cover">
+</div>
+<div class="ml-4">
+<h4 class="font-semibold text-gray-900">Sarah Mitchell</h4>
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+</div>
+</div>
+<p class="text-gray-600">"I love how inclusive their size range is. Finally found a brand that makes me feel beautiful and confident. The customer service is outstanding too!"</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+<div class="flex items-center mb-4">
+<div class="flex-shrink-0">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20stylish%20young%20woman%2C%20clean%20background%2C%20natural%20lighting%2C%20fashionable%20appearance&width=100&height=100&seq=review3&orientation=squarish" alt="Customer" class="w-12 h-12 rounded-full object-cover">
+</div>
+<div class="ml-4">
+<h4 class="font-semibold text-gray-900">Emily Rodriguez</h4>
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+</div>
+</div>
+<p class="text-gray-600">"The attention to detail in their dresses is amazing. I've ordered multiple times and have never been disappointed. Highly recommend!"</p>
+</div>
+</div>
+</section>
+
+<!-- Instagram Feed -->
+<section class="container mx-auto px-4 mb-16">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Follow Our Style</h2>
+<p class="text-gray-600 mb-4">Get inspired by our latest looks on Instagram</p>
+<a href="#" class="text-primary hover:text-pink-600 font-medium">@dressify_official</a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<div class="aspect-square overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=elegant%20dress%20lifestyle%20photo%2C%20instagram%20style%2C%20natural%20lighting%2C%20fashion%20influencer%20content&width=300&height=300&seq=insta1&orientation=squarish" alt="Instagram Post" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+</div>
+<div class="aspect-square overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=stylish%20dress%20outdoor%20photo%2C%20instagram%20style%2C%20natural%20lighting%2C%20fashion%20blogger%20content&width=300&height=300&seq=insta2&orientation=squarish" alt="Instagram Post" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+</div>
+<div class="aspect-square overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=casual%20dress%20street%20style%20photo%2C%20instagram%20style%2C%20urban%20setting%2C%20fashion%20content&width=300&height=300&seq=insta3&orientation=squarish" alt="Instagram Post" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+</div>
+<div class="aspect-square overflow-hidden rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=evening%20gown%20glamour%20photo%2C%20instagram%20style%2C%20luxury%20setting%2C%20fashion%20editorial&width=300&height=300&seq=insta4&orientation=squarish" alt="Instagram Post" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+</div>
+<div class="aspect-square overflow-hidden rounded-lg hidden md:block">
+<img src="https://readdy.ai/api/search-image?query=party%20dress%20celebration%20photo%2C%20instagram%20style%2C%20event%20setting%2C%20fashion%20moment&width=300&height=300&seq=insta5&orientation=squarish" alt="Instagram Post" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+</div>
+<div class="aspect-square overflow-hidden rounded-lg hidden md:block">
+<img src="https://readdy.ai/api/search-image?query=summer%20dress%20beach%20photo%2C%20instagram%20style%2C%20coastal%20setting%2C%20fashion%20lifestyle&width=300&height=300&seq=insta6&orientation=squarish" alt="Instagram Post" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+</div>
+</div>
+</section>
+
+<!-- Enhanced Footer -->
+<footer class="bg-gray-900 text-white pt-16 pb-8">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+<div>
+<h3 class="font-['Pacifico'] text-2xl mb-4">Dressify</h3>
+<p class="text-gray-400 mb-4">Elevating your style with elegant dresses for every occasion.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-instagram-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-pinterest-fill"></i>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Quick Links</h4>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">New Arrivals</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Best Sellers</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sale</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Collections</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Customer Care</h4>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Shipping & Returns</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Size Guide</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold mb-4">Newsletter</h4>
+<p class="text-gray-400 mb-4">Subscribe to get special offers and updates</p>
+<form class="space-y-2">
+<input type="email" placeholder="Your email" class="w-full px-4 py-2 rounded-button bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary">
+<button type="submit" class="w-full bg-primary text-white py-2 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Subscribe</button>
+</form>
+</div>
+</div>
+<div class="border-t border-gray-800 pt-8">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2024 Dressify. All rights reserved.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+<a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+<a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Shipping Policy</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+</main>
+
+<!-- Product Detail Modal -->
+<div id="productModal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+<div class="bg-white rounded-xl max-w-4xl w-full max-h-screen overflow-y-auto">
+<div class="p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-900">Product Details</h3>
+<button id="closeModal" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="grid md:grid-cols-2 gap-8">
+<!-- Product Image -->
+<div class="space-y-4">
+<div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+<img id="modalProductImage" src="" alt="" class="w-full h-full object-cover object-top">
+</div>
+</div>
+<!-- Product Info -->
+<div class="space-y-6">
+<div>
+<h4 id="modalProductName" class="text-2xl font-bold text-gray-900 mb-2"></h4>
+<p id="modalProductPrice" class="text-3xl font-bold text-primary"></p>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2">Size</label>
+<div id="modalSizeOptions" class="flex flex-wrap gap-2">
+<!-- Size options will be populated -->
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
+<div id="modalColorOptions" class="flex flex-wrap gap-2">
+<!-- Color options will be populated -->
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+<div class="flex items-center space-x-3">
+<button id="decreaseQty" class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-600 hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span id="modalQuantity" class="px-4 py-1 border border-gray-200 rounded">1</span>
+<button id="increaseQty" class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-600 hover:bg-gray-50">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div>
+<p id="modalProductDescription" class="text-gray-600 leading-relaxed"></p>
+</div>
+<button id="addToCartModal" class="w-full bg-primary text-white py-3 px-6 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Add to Cart</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Shopping Cart Panel -->
+<div id="cartPanel" class="cart-panel fixed top-0 right-0 w-96 h-full bg-white shadow-xl z-40 overflow-y-auto">
+<div class="p-6 border-b border-gray-100">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-semibold text-gray-900">Shopping Cart</h3>
+<button id="closeCart" class="w-6 h-6 flex items-center justify-center text-gray-400">
+<i class="ri-close-line"></i>
+</button>
+</div>
+</div>
+<div id="cartItems" class="p-6 space-y-4">
+<!-- Cart items will be populated here -->
+</div>
+<div id="cartEmpty" class="p-6 text-center text-gray-500 hidden">
+<div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 text-gray-300">
+<i class="ri-shopping-bag-line ri-2x"></i>
+</div>
+<p>Your cart is empty</p>
+</div>
+<div id="cartSummary" class="border-t border-gray-100 p-6">
+<div class="space-y-2 mb-4">
+<div class="flex justify-between text-sm">
+<span>Subtotal</span>
+<span id="cartSubtotal">$0.00</span>
+</div>
+<div class="flex justify-between text-sm">
+<span>Shipping</span>
+<span>Free</span>
+</div>
+<div class="flex justify-between font-semibold text-lg border-t border-gray-100 pt-2">
+<span>Total</span>
+<span id="cartTotal">$0.00</span>
+</div>
+</div>
+<button id="checkoutBtn" class="w-full bg-primary text-white py-3 px-6 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Checkout</button>
+</div>
+</div>
+<!-- Admin Panel -->
+<div id="adminPanel" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+<div class="bg-white rounded-xl max-w-6xl w-full max-h-screen overflow-y-auto">
+<div class="p-6 border-b border-gray-100">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-semibold text-gray-900">Admin Panel</h3>
+<button id="closeAdmin" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">
+<i class="ri-close-line"></i>
+</button>
+</div>
+</div>
+<div class="p-6">
+<div class="mb-6">
+<button id="addProductBtn" class="bg-primary text-white px-6 py-2 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Add New Product</button>
+</div>
+<!-- Product Form -->
+<div id="productForm" class="hidden mb-8 p-6 border border-gray-200 rounded-lg">
+<h4 class="text-lg font-semibold mb-4">Product Information</h4>
+<form id="addProductForm" class="grid md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+<input type="text" name="name" required class="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+<input type="number" name="price" required step="0.01" class="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+<select name="category" required class="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary pr-8">
+<option value="casual">Casual</option>
+<option value="formal">Formal</option>
+<option value="party">Party</option>
+<option value="summer">Summer</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Colors (comma separated)</label>
+<input type="text" name="colors" required placeholder="red,blue,black" class="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+</div>
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+<textarea name="description" required rows="3" class="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+</div>
+<div class="md:col-span-2 flex space-x-4">
+<button type="submit" class="bg-primary text-white px-6 py-2 rounded-button hover:bg-pink-600 transition-colors whitespace-nowrap">Save Product</button>
+<button type="button" id="cancelForm" class="border border-gray-200 text-gray-600 px-6 py-2 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">Cancel</button>
+</div>
+</form>
+</div>
+<!-- Products Table -->
+<div class="overflow-x-auto">
+<table class="w-full border border-gray-200 rounded-lg">
+<thead class="bg-gray-50">
+<tr>
+<th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Product</th>
+<th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Price</th>
+<th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Category</th>
+<th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Stock</th>
+<th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
+</tr>
+</thead>
+<tbody id="adminProductList" class="divide-y divide-gray-200">
+<!-- Admin products will be populated here -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- Overlay -->
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden"></div>
+<script id="app-state">
+let products = [];
+let cart = [];
+let filters = {
+search: '',
+minPrice: 0,
+maxPrice: 500,
+sizes: [],
+colors: [],
+sort: 'latest'
+};
+let currentProduct = null;
+let displayedProducts = 8;
+function initializeApp() {
+loadProducts();
+loadCart();
+renderProducts();
+updateCartUI();
+}
+function loadProducts() {
+const savedProducts = localStorage.getItem('dressify_products');
+if (savedProducts) {
+products = JSON.parse(savedProducts);
+} else {
+products = [
+{
+id: 1,
+name: "Elegant Evening Gown",
+price: 299.99,
+category: "formal",
+colors: ["black", "red", "blue"],
+sizes: ["XS", "S", "M", "L", "XL"],
+description: "A stunning floor-length evening gown perfect for special occasions. Features a fitted bodice and flowing skirt.",
+image: "https://readdy.ai/api/search-image?query=elegant%20black%20evening%20gown%20dress%20on%20model%2C%20studio%20photography%2C%20clean%20white%20background%2C%20fashion%20photography%2C%20high-end%20luxury%20dress%2C%20sophisticated%20styling&width=400&height=600&seq=1&orientation=portrait",
+stock: 15
+},
+{
+id: 2,
+name: "Summer Floral Dress",
+price: 89.99,
+category: "summer",
+colors: ["pink", "yellow", "white"],
+sizes: ["XS", "S", "M", "L"],
+description: "Light and breezy summer dress with beautiful floral patterns. Perfect for casual outings and warm weather.",
+image: "https://readdy.ai/api/search-image?query=summer%20floral%20dress%20on%20model%2C%20bright%20colorful%20flowers%20pattern%2C%20studio%20photography%2C%20clean%20white%20background%2C%20casual%20fashion%2C%20cheerful%20and%20vibrant&width=400&height=600&seq=2&orientation=portrait",
+stock: 22
+},
+{
+id: 3,
+name: "Cocktail Party Dress",
+price: 159.99,
+category: "party",
+colors: ["black", "purple", "red"],
+sizes: ["S", "M", "L", "XL"],
+description: "Chic cocktail dress with sequin details. Ideal for parties and night events.",
+image: "https://readdy.ai/api/search-image?query=cocktail%20party%20dress%20with%20sequins%2C%20glamorous%20short%20dress%20on%20model%2C%20studio%20photography%2C%20clean%20white%20background%2C%20party%20fashion%2C%20sparkly%20elegant%20design&width=400&height=600&seq=3&orientation=portrait",
+stock: 18
+},
+{
+id: 4,
+name: "Casual Midi Dress",
+price: 79.99,
+category: "casual",
+colors: ["blue", "green", "white"],
+sizes: ["XS", "S", "M", "L", "XL"],
+description: "Comfortable midi dress perfect for everyday wear. Versatile and stylish for any casual occasion.",
+image: "https://readdy.ai/api/search-image?query=casual%20midi%20dress%20on%20model%2C%20comfortable%20everyday%20wear%2C%20studio%20photography%2C%20clean%20white%20background%2C%20relaxed%20fashion%2C%20modern%20simple%20design&width=400&height=600&seq=4&orientation=portrait",
+stock: 30
+},
+{
+id: 5,
+name: "Business Professional Dress",
+price: 129.99,
+category: "formal",
+colors: ["black", "blue", "gray"],
+sizes: ["XS", "S", "M", "L", "XL"],
+description: "Professional dress suitable for business meetings and office wear. Sophisticated and comfortable.",
+image: "https://readdy.ai/api/search-image?query=business%20professional%20dress%20on%20model%2C%20office%20wear%2C%20studio%20photography%2C%20clean%20white%20background%2C%20corporate%20fashion%2C%20elegant%20tailored%20design&width=400&height=600&seq=5&orientation=portrait",
+stock: 25
+},
+{
+id: 6,
+name: "Bohemian Maxi Dress",
+price: 119.99,
+category: "casual",
+colors: ["purple", "green", "yellow"],
+sizes: ["S", "M", "L", "XL"],
+description: "Flowing bohemian maxi dress with intricate patterns. Perfect for festivals and casual gatherings.",
+image: "https://readdy.ai/api/search-image?query=bohemian%20maxi%20dress%20on%20model%2C%20flowing%20fabric%20with%20patterns%2C%20studio%20photography%2C%20clean%20white%20background%2C%20boho%20fashion%2C%20artistic%20ethnic%20design&width=400&height=600&seq=6&orientation=portrait",
+stock: 20
+},
+{
+id: 7,
+name: "Little Black Dress",
+price: 149.99,
+category: "formal",
+colors: ["black"],
+sizes: ["XS", "S", "M", "L"],
+description: "Classic little black dress that never goes out of style. Essential for every wardrobe.",
+image: "https://readdy.ai/api/search-image?query=classic%20little%20black%20dress%20on%20model%2C%20timeless%20elegant%20design%2C%20studio%20photography%2C%20clean%20white%20background%2C%20sophisticated%20fashion%2C%20versatile%20styling&width=400&height=600&seq=7&orientation=portrait",
+stock: 12
+},
+{
+id: 8,
+name: "Wedding Guest Dress",
+price: 189.99,
+category: "formal",
+colors: ["pink", "blue", "purple"],
+sizes: ["XS", "S", "M", "L", "XL"],
+description: "Beautiful dress perfect for wedding ceremonies and special celebrations.",
+image: "https://readdy.ai/api/search-image?query=wedding%20guest%20dress%20on%20model%2C%20elegant%20formal%20wear%2C%20studio%20photography%2C%20clean%20white%20background%2C%20celebration%20fashion%2C%20refined%20sophisticated%20design&width=400&height=600&seq=8&orientation=portrait",
+stock: 16
+}
+];
+saveProducts();
+}
+}
+function saveProducts() {
+localStorage.setItem('dressify_products', JSON.stringify(products));
+}
+function loadCart() {
+const savedCart = localStorage.getItem('dressify_cart');
+if (savedCart) {
+cart = JSON.parse(savedCart);
+}
+}
+function saveCart() {
+localStorage.setItem('dressify_cart', JSON.stringify(cart));
+}
+</script>
+<script id="filter-functionality">
+document.addEventListener('DOMContentLoaded', function() {
+const filterToggle = document.getElementById('filterToggle');
+const filterPanel = document.getElementById('filterPanel');
+const closeFilter = document.getElementById('closeFilter');
+const overlay = document.getElementById('overlay');
+filterToggle.addEventListener('click', function() {
+filterPanel.classList.add('active');
+overlay.classList.remove('hidden');
+});
+closeFilter.addEventListener('click', function() {
+filterPanel.classList.remove('active');
+overlay.classList.add('hidden');
+});
+overlay.addEventListener('click', function() {
+filterPanel.classList.remove('active');
+overlay.classList.add('hidden');
+});
+// Price range
+const priceRange = document.getElementById('priceRange');
+const minPrice = document.getElementById('minPrice');
+const maxPrice = document.getElementById('maxPrice');
+priceRange.addEventListener('input', function() {
+maxPrice.value = this.value;
+filters.maxPrice = parseInt(this.value);
+});
+minPrice.addEventListener('input', function() {
+filters.minPrice = parseInt(this.value) || 0;
+});
+maxPrice.addEventListener('input', function() {
+filters.maxPrice = parseInt(this.value) || 500;
+priceRange.value = this.value;
+});
+// Size filters
+document.querySelectorAll('.size-filter').forEach(checkbox => {
+checkbox.addEventListener('change', function() {
+const span = this.nextElementSibling;
+if (this.checked) {
+span.classList.add('bg-primary', 'text-white', 'border-primary');
+if (!filters.sizes.includes(this.value)) {
+filters.sizes.push(this.value);
+}
+} else {
+span.classList.remove('bg-primary', 'text-white', 'border-primary');
+filters.sizes = filters.sizes.filter(size => size !== this.value);
+}
+});
+});
+// Color filters
+document.querySelectorAll('.color-swatch').forEach(swatch => {
+swatch.addEventListener('click', function() {
+const color = this.dataset.color;
+if (this.classList.contains('selected')) {
+this.classList.remove('selected');
+filters.colors = filters.colors.filter(c => c !== color);
+} else {
+this.classList.add('selected');
+if (!filters.colors.includes(color)) {
+filters.colors.push(color);
+}
+}
+});
+});
+// Sort
+document.getElementById('sortSelect').addEventListener('change', function() {
+filters.sort = this.value;
+renderProducts();
+});
+// Apply filters
+document.getElementById('applyFilters').addEventListener('click', function() {
+renderProducts();
+if (window.innerWidth < 768) {
+filterPanel.classList.remove('active');
+overlay.classList.add('hidden');
+}
+});
+// Clear filters
+document.getElementById('clearFilters').addEventListener('click', function() {
+filters = {
+search: '',
+minPrice: 0,
+maxPrice: 500,
+sizes: [],
+colors: [],
+sort: 'latest'
+};
+// Reset UI
+document.getElementById('priceRange').value = 500;
+document.getElementById('minPrice').value = 0;
+document.getElementById('maxPrice').value = 500;
+document.getElementById('sortSelect').value = 'latest';
+document.querySelectorAll('.size-filter').forEach(checkbox => {
+checkbox.checked = false;
+checkbox.nextElementSibling.classList.remove('bg-primary', 'text-white', 'border-primary');
+});
+document.querySelectorAll('.color-swatch').forEach(swatch => {
+swatch.classList.remove('selected');
+});
+renderProducts();
+});
+// Search
+function handleSearch(input) {
+filters.search = input.value.toLowerCase();
+renderProducts();
+}
+document.getElementById('searchInput').addEventListener('input', function() {
+handleSearch(this);
+});
+document.getElementById('mobileSearchInput').addEventListener('input', function() {
+handleSearch(this);
+});
+});
+</script>
+<script id="product-display">
+function renderProducts() {
+const productGrid = document.getElementById('productGrid');
+let filteredProducts = [...products];
+// Apply filters
+if (filters.search) {
+filteredProducts = filteredProducts.filter(product =>
+product.name.toLowerCase().includes(filters.search) ||
+product.category.toLowerCase().includes(filters.search)
+);
+}
+if (filters.minPrice > 0 || filters.maxPrice < 500) {
+filteredProducts = filteredProducts.filter(product =>
+product.price >= filters.minPrice && product.price <= filters.maxPrice
+);
+}
+if (filters.sizes.length > 0) {
+filteredProducts = filteredProducts.filter(product =>
+filters.sizes.some(size => product.sizes.includes(size))
+);
+}
+if (filters.colors.length > 0) {
+filteredProducts = filteredProducts.filter(product =>
+filters.colors.some(color => product.colors.includes(color))
+);
+}
+// Apply sorting
+switch (filters.sort) {
+case 'price-low':
+filteredProducts.sort((a, b) => a.price - b.price);
+break;
+case 'price-high':
+filteredProducts.sort((a, b) => b.price - a.price);
+break;
+case 'name':
+filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+break;
+case 'latest':
+default:
+filteredProducts.sort((a, b) => b.id - a.id);
+break;
+}
+// Render products
+const productsToShow = filteredProducts.slice(0, displayedProducts);
+productGrid.innerHTML = productsToShow.map(product => `
+<div class="product-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+<div class="aspect-square bg-gray-100 overflow-hidden">
+<img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300">
+</div>
+<div class="p-4">
+<h3 class="font-semibold text-gray-900 mb-2">${product.name}</h3>
+<p class="text-2xl font-bold text-primary mb-2">$${product.price}</p>
+<div class="flex items-center justify-between mb-3">
+<div class="flex space-x-1">
+${product.sizes.slice(0, 3).map(size => `<span class="px-2 py-1 bg-gray-100 text-xs rounded">${size}</span>`).join('')}
+${product.sizes.length > 3 ? '<span class="text-xs text-gray-500">+more</span>' : ''}
+</div>
+<span class="text-sm text-gray-500">${product.stock} left</span>
+</div>
+<div class="space-y-2">
+<button onclick="openProductModal(${product.id})" class="w-full border border-gray-200 text-gray-700 py-2 px-4 rounded-button hover:bg-gray-50 transition-colors text-sm whitespace-nowrap">Quick View</button>
+<button onclick="addToCart(${product.id})" class="w-full bg-primary text-white py-2 px-4 rounded-button hover:bg-pink-600 transition-colors text-sm whitespace-nowrap">Add to Cart</button>
+</div>
+</div>
+</div>
+`).join('');
+// Show/hide load more button
+const loadMoreBtn = document.getElementById('loadMore');
+if (filteredProducts.length <= displayedProducts) {
+loadMoreBtn.style.display = 'none';
+} else {
+loadMoreBtn.style.display = 'block';
+}
+}
+document.getElementById('loadMore').addEventListener('click', function() {
+displayedProducts += 8;
+renderProducts();
+});
+</script>
+<script id="product-modal">
+function openProductModal(productId) {
+currentProduct = products.find(p => p.id === productId);
+if (!currentProduct) return;
+const modal = document.getElementById('productModal');
+const modalImage = document.getElementById('modalProductImage');
+const modalName = document.getElementById('modalProductName');
+const modalPrice = document.getElementById('modalProductPrice');
+const modalDescription = document.getElementById('modalProductDescription');
+const modalSizeOptions = document.getElementById('modalSizeOptions');
+const modalColorOptions = document.getElementById('modalColorOptions');
+modalImage.src = currentProduct.image;
+modalImage.alt = currentProduct.name;
+modalName.textContent = currentProduct.name;
+modalPrice.textContent = `$${currentProduct.price}`;
+modalDescription.textContent = currentProduct.description;
+// Size options
+modalSizeOptions.innerHTML = currentProduct.sizes.map(size => `
+<label class="flex items-center">
+<input type="radio" name="modalSize" value="${size}" class="sr-only">
+<span class="px-3 py-2 border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-primary transition-colors">${size}</span>
+</label>
+`).join('');
+// Color options
+modalColorOptions.innerHTML = currentProduct.colors.map(color => `
+<label class="flex items-center">
+<input type="radio" name="modalColor" value="${color}" class="sr-only">
+<div class="w-8 h-8 rounded-full border-2 border-gray-200 cursor-pointer hover:border-primary transition-colors ${getColorClass(color)}" data-color="${color}"></div>
+</label>
+`).join('');
+// Add event listeners for size and color selection
+modalSizeOptions.querySelectorAll('input').forEach(input => {
+input.addEventListener('change', function() {
+modalSizeOptions.querySelectorAll('span').forEach(span => {
+span.classList.remove('bg-primary', 'text-white', 'border-primary');
+});
+this.nextElementSibling.classList.add('bg-primary', 'text-white', 'border-primary');
+});
+});
+modalColorOptions.querySelectorAll('input').forEach(input => {
+input.addEventListener('change', function() {
+modalColorOptions.querySelectorAll('div').forEach(div => {
+div.classList.remove('ring-2', 'ring-primary');
+});
+this.nextElementSibling.classList.add('ring-2', 'ring-primary');
+});
+});
+// Select first options by default
+if (modalSizeOptions.querySelector('input')) {
+modalSizeOptions.querySelector('input').checked = true;
+modalSizeOptions.querySelector('span').classList.add('bg-primary', 'text-white', 'border-primary');
+}
+if (modalColorOptions.querySelector('input')) {
+modalColorOptions.querySelector('input').checked = true;
+modalColorOptions.querySelector('div').classList.add('ring-2', 'ring-primary');
+}
+modal.classList.add('active');
+}
+function getColorClass(color) {
+const colorMap = {
+'red': 'bg-red-500',
+'blue': 'bg-blue-500',
+'green': 'bg-green-500',
+'yellow': 'bg-yellow-500',
+'purple': 'bg-purple-500',
+'pink': 'bg-pink-500',
+'black': 'bg-gray-800',
+'white': 'bg-white',
+'gray': 'bg-gray-500'
+};
+return colorMap[color] || 'bg-gray-300';
+}
+document.getElementById('closeModal').addEventListener('click', function() {
+document.getElementById('productModal').classList.remove('active');
+});
+document.getElementById('decreaseQty').addEventListener('click', function() {
+const qtyElement = document.getElementById('modalQuantity');
+let qty = parseInt(qtyElement.textContent);
+if (qty > 1) {
+qtyElement.textContent = qty - 1;
+}
+});
+document.getElementById('increaseQty').addEventListener('click', function() {
+const qtyElement = document.getElementById('modalQuantity');
+let qty = parseInt(qtyElement.textContent);
+if (qty < currentProduct.stock) {
+qtyElement.textContent = qty + 1;
+}
+});
+document.getElementById('addToCartModal').addEventListener('click', function() {
+if (!currentProduct) return;
+const selectedSize = document.querySelector('input[name="modalSize"]:checked')?.value;
+const selectedColor = document.querySelector('input[name="modalColor"]:checked')?.value;
+const quantity = parseInt(document.getElementById('modalQuantity').textContent);
+if (!selectedSize || !selectedColor) {
+showNotification('Please select size and color', 'error');
+return;
+}
+addToCartWithOptions(currentProduct.id, selectedSize, selectedColor, quantity);
+document.getElementById('productModal').classList.remove('active');
+});
+</script>
+<script id="cart-functionality">
+function addToCart(productId, size = 'M', color = null, quantity = 1) {
+const product = products.find(p => p.id === productId);
+if (!product) return;
+// Use first available color if none specified
+if (!color) {
+color = product.colors[0];
+}
+const cartItemId = `${productId}-${size}-${color}`;
+const existingItem = cart.find(item => item.id === cartItemId);
+if (existingItem) {
+if (existingItem.quantity + quantity <= product.stock) {
+existingItem.quantity += quantity;
+} else {
+showNotification('Not enough stock available', 'error');
+return;
+}
+} else {
+if (quantity <= product.stock) {
+cart.push({
+id: cartItemId,
+productId: productId,
+name: product.name,
+price: product.price,
+image: product.image,
+size: size,
+color: color,
+quantity: quantity,
+stock: product.stock
+});
+} else {
+showNotification('Not enough stock available', 'error');
+return;
+}
+}
+saveCart();
+updateCartUI();
+showNotification('Item added to cart!');
+}
+function addToCartWithOptions(productId, size, color, quantity) {
+addToCart(productId, size, color, quantity);
+}
+function removeFromCart(cartItemId) {
+cart = cart.filter(item => item.id !== cartItemId);
+saveCart();
+updateCartUI();
+showNotification('Item removed from cart');
+}
+function updateCartQuantity(cartItemId, newQuantity) {
+const item = cart.find(item => item.id === cartItemId);
+if (item) {
+if (newQuantity <= 0) {
+removeFromCart(cartItemId);
+} else if (newQuantity <= item.stock) {
+item.quantity = newQuantity;
+saveCart();
+updateCartUI();
+} else {
+showNotification('Not enough stock available', 'error');
+}
+}
+}
+function updateCartUI() {
+const cartCount = document.getElementById('cartCount');
+const cartItems = document.getElementById('cartItems');
+const cartEmpty = document.getElementById('cartEmpty');
+const cartSummary = document.getElementById('cartSummary');
+const cartSubtotal = document.getElementById('cartSubtotal');
+const cartTotal = document.getElementById('cartTotal');
+const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+cartCount.textContent = totalItems;
+if (cart.length === 0) {
+cartItems.style.display = 'none';
+cartEmpty.classList.remove('hidden');
+cartSummary.style.display = 'none';
+} else {
+cartItems.style.display = 'block';
+cartEmpty.classList.add('hidden');
+cartSummary.style.display = 'block';
+cartItems.innerHTML = cart.map(item => `
+<div class="flex items-center space-x-3 p-3 border border-gray-100 rounded-lg">
+<img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover object-top rounded">
+<div class="flex-1">
+<h4 class="font-medium text-sm">${item.name}</h4>
+<p class="text-xs text-gray-500">${item.size} • ${item.color}</p>
+<p class="text-sm font-semibold text-primary">$${item.price}</p>
+</div>
+<div class="flex items-center space-x-2">
+<button onclick="updateCartQuantity('${item.id}', ${item.quantity - 1})" class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded text-xs">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="text-sm px-2">${item.quantity}</span>
+<button onclick="updateCartQuantity('${item.id}', ${item.quantity + 1})" class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded text-xs">
+<i class="ri-add-line"></i>
+</button>
+</div>
+<button onclick="removeFromCart('${item.id}')" class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500">
+<i class="ri-close-line"></i>
+</button>
+</div>
+`).join('');
+cartSubtotal.textContent = `$${totalPrice.toFixed(2)}`;
+cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+}
+}
+document.getElementById('cartToggle').addEventListener('click', function() {
+document.getElementById('cartPanel').classList.add('active');
+});
+document.getElementById('closeCart').addEventListener('click', function() {
+document.getElementById('cartPanel').classList.remove('active');
+});
+document.getElementById('checkoutBtn').addEventListener('click', function() {
+if (cart.length === 0) return;
+showNotification('Checkout functionality would be implemented here');
+// Here you would implement the checkout process
+});
+</script>
+<script id="admin-functionality">
+document.getElementById('adminToggle').addEventListener('click', function() {
+document.getElementById('adminPanel').classList.add('active');
+renderAdminProducts();
+});
+document.getElementById('closeAdmin').addEventListener('click', function() {
+document.getElementById('adminPanel').classList.remove('active');
+});
+document.getElementById('addProductBtn').addEventListener('click', function() {
+document.getElementById('productForm').classList.remove('hidden');
+});
+document.getElementById('cancelForm').addEventListener('click', function() {
+document.getElementById('productForm').classList.add('hidden');
+document.getElementById('addProductForm').reset();
+});
+document.getElementById('addProductForm').addEventListener('submit', function(e) {
+e.preventDefault();
+const formData = new FormData(this);
+const newProduct = {
+id: Date.now(),
+name: formData.get('name'),
+price: parseFloat(formData.get('price')),
+category: formData.get('category'),
+colors: formData.get('colors').split(',').map(c => c.trim()),
+sizes: ['XS', 'S', 'M', 'L', 'XL'],
+description: formData.get('description'),
+image: `https://readdy.ai/api/search-image?query=$%7BformData.get%28name%29%7D%20dress%20on%20model%2C%20studio%20photography%2C%20clean%20white%20background%2C%20fashion%20photography%2C%20elegant%20styling&width=400&height=600&seq=${Date.now()}&orientation=portrait`,
+stock: 20
+};
+products.push(newProduct);
+saveProducts();
+renderProducts();
+renderAdminProducts();
+this.reset();
+document.getElementById('productForm').classList.add('hidden');
+showNotification('Product added successfully!');
+});
+function renderAdminProducts() {
+const adminProductList = document.getElementById('adminProductList');
+adminProductList.innerHTML = products.map(product => `
+<tr>
+<td class="px-4 py-3">
+<div class="flex items-center space-x-3">
+<img src="${product.image}" alt="${product.name}" class="w-12 h-12 object-cover object-top rounded">
+<div>
+<div class="font-medium text-sm">${product.name}</div>
+<div class="text-xs text-gray-500">${product.category}</div>
+</div>
+</div>
+</td>
+<td class="px-4 py-3 text-sm">$${product.price}</td>
+<td class="px-4 py-3 text-sm capitalize">${product.category}</td>
+<td class="px-4 py-3 text-sm">${product.stock}</td>
+<td class="px-4 py-3">
+<div class="flex space-x-2">
+<button onclick="editProduct(${product.id})" class="text-blue-600 hover:text-blue-800 text-sm">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-edit-line"></i>
+</div>
+</button>
+<button onclick="deleteProduct(${product.id})" class="text-red-600 hover:text-red-800 text-sm">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-delete-bin-line"></i>
+</div>
+</button>
+</div>
+</td>
+</tr>
+`).join('');
+}
+function editProduct(productId) {
+showNotification('Edit functionality would be implemented here');
+}
+function deleteProduct(productId) {
+if (confirm('Are you sure you want to delete this product?')) {
+products = products.filter(p => p.id !== productId);
+saveProducts();
+renderProducts();
+renderAdminProducts();
+showNotification('Product deleted successfully');
+}
+}
+</script>
+<script id="notification-system">
+function showNotification(message, type = 'success') {
+const notification = document.getElementById('notification');
+const notificationText = document.getElementById('notificationText');
+notificationText.textContent = message;
+// Set color based on type
+notification.className = `notification fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg ${
+type === 'error' ? 'bg-red-500' : 'bg-green-500'
+} text-white`;
+notification.classList.add('show');
+setTimeout(() => {
+notification.classList.remove('show');
+}, 3000);
+}
+// Initialize app when page loads
+document.addEventListener('DOMContentLoaded', function() {
+initializeApp();
+});
+</script>
+</body>
+</html>
