@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DressStyle - Modern Fashion E-commerce</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#57b5e7',secondary:'#8dd3c7'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        <div class="w-full px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <div class="font-['Pacifico'] text-2xl text-gray-900">logo</div>
+                    <nav class="hidden lg:flex space-x-8">
+                        <a href="#" class="text-gray-700 hover:text-primary transition-colors">New Arrivals</a>
+                        <a href="#" class="text-gray-700 hover:text-primary transition-colors">Dresses</a>
+                        <a href="#" class="text-gray-700 hover:text-primary transition-colors">Collections</a>
+                        <a href="#" class="text-gray-700 hover:text-primary transition-colors">Sale</a>
+                    </nav>
+                </div>
+                
+                <div class="flex-1 max-w-lg mx-8">
+                    <div class="relative">
+                        <input type="text" placeholder="Search for dresses..." class="w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                            <i class="ri-search-line text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-heart-line text-gray-600 hover:text-primary cursor-pointer transition-colors"></i>
+                    </div>
+                    <div class="relative">
+                        <div class="w-6 h-6 flex items-center justify-center">
+                            <i class="ri-shopping-bag-line text-gray-600 hover:text-primary cursor-pointer transition-colors"></i>
+                        </div>
+                        <span class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </div>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-user-line text-gray-600 hover:text-primary cursor-pointer transition-colors"></i>
+                    </div>
+                    <div class="lg:hidden w-6 h-6 flex items-center justify-center">
+                        <i class="ri-menu-line text-gray-600 cursor-pointer"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="relative h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20fashion%20model%20wearing%20flowing%20summer%20dress%20in%20minimalist%20studio%20setting%20with%20soft%20natural%20lighting%2C%20clean%20white%20background%2C%20modern%20fashion%20photography%20style%2C%20professional%20commercial%20shoot%2C%20high-end%20fashion%20brand%20aesthetic%2C%20sophisticated%20and%20luxurious%20atmosphere&width=1920&height=1080&seq=hero1&orientation=landscape')">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent"></div>
+            <div class="relative w-full h-full flex items-center">
+                <div class="w-full px-6">
+                    <div class="max-w-2xl">
+                        <h1 class="text-6xl font-light text-gray-900 mb-6 leading-tight">Discover Your Perfect Dress</h1>
+                        <p class="text-xl text-gray-600 mb-8 leading-relaxed">Explore our curated collection of elegant dresses for every occasion. From casual day wear to stunning evening gowns.</p>
+                        <div class="flex space-x-4">
+                            <button class="bg-primary text-white px-8 py-4 !rounded-button whitespace-nowrap hover:bg-primary/90 transition-colors text-lg">Shop Now</button>
+                            <button class="border-2 border-gray-900 text-gray-900 px-8 py-4 !rounded-button whitespace-nowrap hover:bg-gray-900 hover:text-white transition-colors text-lg">View Collections</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-4 bg-gray-50 border-b border-gray-100">
+            <div class="w-full px-6">
+                <div class="flex justify-center space-x-12 overflow-x-auto">
+                    <a href="#" class="flex flex-col items-center space-y-2 min-w-0 group">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                            <i class="ri-shirt-line text-2xl text-gray-700 group-hover:text-primary transition-colors"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 group-hover:text-primary transition-colors">Casual</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center space-y-2 min-w-0 group">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                            <i class="ri-user-star-line text-2xl text-gray-700 group-hover:text-primary transition-colors"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 group-hover:text-primary transition-colors">Formal</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center space-y-2 min-w-0 group">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                            <i class="ri-moon-line text-2xl text-gray-700 group-hover:text-primary transition-colors"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 group-hover:text-primary transition-colors">Evening</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center space-y-2 min-w-0 group">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                            <i class="ri-sun-line text-2xl text-gray-700 group-hover:text-primary transition-colors"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 group-hover:text-primary transition-colors">Summer</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center space-y-2 min-w-0 group">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                            <i class="ri-briefcase-line text-2xl text-gray-700 group-hover:text-primary transition-colors"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 group-hover:text-primary transition-colors">Business</span>
+                    </a>
+                    <a href="#" class="flex flex-col items-center space-y-2 min-w-0 group">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                            <i class="ri-heart-line text-2xl text-gray-700 group-hover:text-primary transition-colors"></i>
+                        </div>
+                        <span class="text-sm text-gray-700 group-hover:text-primary transition-colors">Party</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 px-6">
+            <div class="w-full">
+                <div class="flex gap-8">
+                    <aside class="w-80 flex-shrink-0">
+                        <div class="bg-white border border-gray-100 rounded-lg p-6 sticky top-24">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-lg font-medium text-gray-900">Filters</h3>
+                                <button class="text-sm text-primary hover:text-primary/80">Clear All</button>
+                            </div>
+                            
+                            <div class="space-y-8">
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-4">Price Range</h4>
+                                    <div class="relative">
+                                        <input type="range" min="0" max="500" value="250" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                                        <div class="flex justify-between text-sm text-gray-500 mt-2">
+                                            <span>$0</span>
+                                            <span>$500</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-4">Colors</h4>
+                                    <div class="flex flex-wrap gap-3">
+                                        <div class="w-8 h-8 bg-black rounded-full cursor-pointer border-2 border-transparent hover:border-gray-300 transition-colors"></div>
+                                        <div class="w-8 h-8 bg-white rounded-full cursor-pointer border-2 border-gray-200 hover:border-gray-400 transition-colors"></div>
+                                        <div class="w-8 h-8 bg-red-500 rounded-full cursor-pointer border-2 border-transparent hover:border-gray-300 transition-colors"></div>
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full cursor-pointer border-2 border-transparent hover:border-gray-300 transition-colors"></div>
+                                        <div class="w-8 h-8 bg-green-500 rounded-full cursor-pointer border-2 border-transparent hover:border-gray-300 transition-colors"></div>
+                                        <div class="w-8 h-8 bg-pink-500 rounded-full cursor-pointer border-2 border-transparent hover:border-gray-300 transition-colors"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-4">Size</h4>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <button class="py-2 px-3 text-sm border border-gray-200 rounded !rounded-button hover:border-primary hover:text-primary transition-colors">XS</button>
+                                        <button class="py-2 px-3 text-sm border border-gray-200 rounded !rounded-button hover:border-primary hover:text-primary transition-colors">S</button>
+                                        <button class="py-2 px-3 text-sm border border-gray-200 rounded !rounded-button hover:border-primary hover:text-primary transition-colors">M</button>
+                                        <button class="py-2 px-3 text-sm border border-gray-200 rounded !rounded-button hover:border-primary hover:text-primary transition-colors">L</button>
+                                        <button class="py-2 px-3 text-sm border border-gray-200 rounded !rounded-button hover:border-primary hover:text-primary transition-colors">XL</button>
+                                        <button class="py-2 px-3 text-sm border border-gray-200 rounded !rounded-button hover:border-primary hover:text-primary transition-colors">XXL</button>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-4">Style</h4>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">A-Line</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Bodycon</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Maxi</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Mini</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-4">Material</h4>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Cotton</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Silk</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <div class="relative">
+                                                <input type="checkbox" class="sr-only peer">
+                                                <div class="w-5 h-5 bg-white border-2 border-gray-300 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors"></div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <i class="ri-check-line text-white text-xs opacity-0 peer-checked:opacity-100"></i>
+                                                </div>
+                                            </div>
+                                            <span class="ml-3 text-sm text-gray-700">Polyester</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-8">
+                            <h2 class="text-2xl font-light text-gray-900">Featured Dresses</h2>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-sm text-gray-600">Sort by:</span>
+                                <button class="flex items-center space-x-2 text-sm text-gray-700 hover:text-primary transition-colors">
+                                    <span>Latest</span>
+                                    <div class="w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-8">
+                            <div class="group cursor-pointer">
+                                <div class="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4] mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=elegant%20black%20cocktail%20dress%20on%20white%20background%2C%20professional%20product%20photography%2C%20minimalist%20fashion%20shoot%2C%20high-end%20boutique%20style%2C%20clean%20commercial%20image&width=400&height=533&seq=dress1&orientation=portrait" alt="Black Cocktail Dress" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                                            <i class="ri-heart-line text-gray-600 hover:text-red-500 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <button class="w-full bg-white text-gray-900 py-3 !rounded-button whitespace-nowrap hover:bg-gray-50 transition-colors text-sm font-medium">Quick Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Elegant Black Cocktail Dress</h3>
+                                <p class="text-gray-600 mb-2">Perfect for evening events</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xl font-medium text-gray-900">$189</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-4 h-4 bg-black rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-navy-900 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-red-600 rounded-full border border-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="group cursor-pointer">
+                                <div class="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4] mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=flowing%20summer%20maxi%20dress%20in%20soft%20pastel%20colors%2C%20professional%20fashion%20photography%2C%20white%20background%2C%20elegant%20feminine%20style%2C%20boutique%20quality%20image&width=400&height=533&seq=dress2&orientation=portrait" alt="Summer Maxi Dress" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                                            <i class="ri-heart-line text-gray-600 hover:text-red-500 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <button class="w-full bg-white text-gray-900 py-3 !rounded-button whitespace-nowrap hover:bg-gray-50 transition-colors text-sm font-medium">Quick Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Flowing Summer Maxi</h3>
+                                <p class="text-gray-600 mb-2">Lightweight and comfortable</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xl font-medium text-gray-900">$129</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-4 h-4 bg-pink-300 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-blue-300 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-green-300 rounded-full border border-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="group cursor-pointer">
+                                <div class="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4] mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=professional%20business%20dress%20in%20navy%20blue%2C%20corporate%20fashion%20photography%2C%20clean%20white%20background%2C%20sophisticated%20office%20wear%2C%20high-quality%20product%20image&width=400&height=533&seq=dress3&orientation=portrait" alt="Business Dress" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                                            <i class="ri-heart-line text-gray-600 hover:text-red-500 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <button class="w-full bg-white text-gray-900 py-3 !rounded-button whitespace-nowrap hover:bg-gray-50 transition-colors text-sm font-medium">Quick Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Professional Business Dress</h3>
+                                <p class="text-gray-600 mb-2">Perfect for office wear</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xl font-medium text-gray-900">$159</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-4 h-4 bg-navy-600 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-gray-600 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-black rounded-full border border-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="group cursor-pointer">
+                                <div class="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4] mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=casual%20floral%20print%20dress%2C%20spring%20fashion%20photography%2C%20white%20background%2C%20comfortable%20day%20wear%2C%20feminine%20and%20fresh%20style%2C%20boutique%20quality&width=400&height=533&seq=dress4&orientation=portrait" alt="Floral Print Dress" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                                            <i class="ri-heart-line text-gray-600 hover:text-red-500 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <button class="w-full bg-white text-gray-900 py-3 !rounded-button whitespace-nowrap hover:bg-gray-50 transition-colors text-sm font-medium">Quick Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Floral Print Day Dress</h3>
+                                <p class="text-gray-600 mb-2">Casual and comfortable</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xl font-medium text-gray-900">$89</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-4 h-4 bg-pink-400 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-yellow-400 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-purple-400 rounded-full border border-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="group cursor-pointer">
+                                <div class="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4] mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=luxurious%20evening%20gown%20in%20deep%20burgundy%2C%20formal%20wear%20photography%2C%20white%20background%2C%20elegant%20party%20dress%2C%20high-end%20fashion%2C%20sophisticated%20style&width=400&height=533&seq=dress5&orientation=portrait" alt="Evening Gown" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                                            <i class="ri-heart-line text-gray-600 hover:text-red-500 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <button class="w-full bg-white text-gray-900 py-3 !rounded-button whitespace-nowrap hover:bg-gray-50 transition-colors text-sm font-medium">Quick Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Luxury Evening Gown</h3>
+                                <p class="text-gray-600 mb-2">For special occasions</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xl font-medium text-gray-900">$299</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-4 h-4 bg-red-800 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-purple-800 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-green-800 rounded-full border border-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="group cursor-pointer">
+                                <div class="relative overflow-hidden rounded-lg bg-gray-50 aspect-[3/4] mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=trendy%20mini%20dress%20in%20bright%20coral%20color%2C%20modern%20fashion%20photography%2C%20white%20background%2C%20youthful%20and%20vibrant%20style%2C%20contemporary%20design&width=400&height=533&seq=dress6&orientation=portrait" alt="Mini Dress" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+                                            <i class="ri-heart-line text-gray-600 hover:text-red-500 transition-colors"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <button class="w-full bg-white text-gray-900 py-3 !rounded-button whitespace-nowrap hover:bg-gray-50 transition-colors text-sm font-medium">Quick Add to Cart</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Trendy Mini Dress</h3>
+                                <p class="text-gray-600 mb-2">Perfect for parties</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xl font-medium text-gray-900">$79</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-4 h-4 bg-coral-500 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-turquoise-500 rounded-full border border-gray-200"></div>
+                                        <div class="w-4 h-4 bg-lime-500 rounded-full border border-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center mt-12">
+                            <button class="border-2 border-gray-900 text-gray-900 px-8 py-3 !rounded-button whitespace-nowrap hover:bg-gray-900 hover:text-white transition-colors">Load More Products</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-gray-50">
+            <div class="w-full px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-light text-gray-900 mb-4">Stay Updated</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Subscribe to our newsletter and be the first to know about new collections, exclusive offers, and fashion trends.</p>
+                </div>
+                
+                <div class="max-w-md mx-auto">
+                    <div class="flex gap-4">
+                        <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <button class="bg-primary text-white px-8 py-3 !rounded-button whitespace-nowrap hover:bg-primary/90 transition-colors">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="w-full px-6">
+            <div class="grid grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="font-['Pacifico'] text-2xl mb-6">logo</div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">Discover your perfect dress with our curated collection of elegant and stylish dresses for every occasion.</p>
+                    <div class="flex space-x-4">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-facebook-fill text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-instagram-fill text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-twitter-fill text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-pinterest-fill text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium mb-6">Shop</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Dresses</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Collections</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sale</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Gift Cards</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium mb-6">Customer Care</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Size Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Shipping Info</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium mb-6">Company</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex items-center justify-between">
+                    <p class="text-gray-400">© 2025 DressStyle. All rights reserved.</p>
+                    <div class="flex items-center space-x-6">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-visa-fill text-gray-400"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-mastercard-fill text-gray-400"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-paypal-fill text-gray-400"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-apple-fill text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script id="filter-interactions">
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const container = checkbox.parentElement;
+                const checkIcon = container.querySelector('.ri-check-line');
+                
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        container.querySelector('div').classList.add('peer-checked:bg-primary', 'peer-checked:border-primary');
+                        checkIcon.classList.add('peer-checked:opacity-100');
+                    } else {
+                        container.querySelector('div').classList.remove('peer-checked:bg-primary', 'peer-checked:border-primary');
+                        checkIcon.classList.remove('peer-checked:opacity-100');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script id="size-filter-interactions">
+        document.addEventListener('DOMContentLoaded', function() {
+            const sizeButtons = document.querySelectorAll('.grid button');
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    sizeButtons.forEach(btn => {
+                        btn.classList.remove('border-primary', 'text-primary', 'bg-primary', 'text-white');
+                        btn.classList.add('border-gray-200', 'text-gray-700');
+                    });
+                    
+                    this.classList.remove('border-gray-200', 'text-gray-700');
+                    this.classList.add('border-primary', 'bg-primary', 'text-white');
+                });
+            });
+        });
+    </script>
+
+    <script id="color-filter-interactions">
+        document.addEventListener('DOMContentLoaded', function() {
+            const colorSwatches = document.querySelectorAll('.flex.flex-wrap.gap-3 > div');
+            colorSwatches.forEach(swatch => {
+                swatch.addEventListener('click', function() {
+                    colorSwatches.forEach(s => {
+                        s.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+                    });
+                    
+                    this.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+                });
+            });
+        });
+    </script>
+
+    <script id="wishlist-interactions">
+        document.addEventListener('DOMContentLoaded', function() {
+            const wishlistButtons = document.querySelectorAll('.ri-heart-line');
+            wishlistButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (this.classList.contains('ri-heart-line')) {
+                        this.classList.remove('ri-heart-line');
+                        this.classList.add('ri-heart-fill', 'text-red-500');
+                    } else {
+                        this.classList.remove('ri-heart-fill', 'text-red-500');
+                        this.classList.add('ri-heart-line');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
