@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karthick</title>
+    <meta
+      name="description"
+      content="Discover premium fashion at LUXE. Shop our curated collection of modern clothing, accessories, and lifestyle pieces. Elevate your style with our sophisticated designs."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#d4af37",
+              secondary: "#1a1a1a",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+            fontFamily: {
+              montserrat: ["Montserrat", "sans-serif"],
+              pacifico: ["Pacifico", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :where([class^="ri-"])::before {
+      content: "\f3c2";
+      }
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      }
+      html {
+      scroll-behavior: smooth;
+      }
+      body {
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      overflow-x: hidden;
+      }
+      .parallax-bg {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      }
+      .hero-overlay {
+      background: linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(26, 26, 26, 0.3) 100%);
+      }
+      .product-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      }
+      .product-card:hover {
+      transform: translateY(-0.5rem);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+      .product-image {
+      transition: transform 0.3s ease;
+      }
+      .product-card:hover .product-image {
+      transform: scale(1.05);
+      }
+      .product-overlay {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      }
+      .product-card:hover .product-overlay {
+      opacity: 1;
+      }
+      .counter {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: all 0.8s ease;
+      }
+      .counter.animate {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .mobile-menu {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      }
+      .mobile-menu.active {
+      transform: translateX(0);
+      }
+      .filter-btn {
+      position: relative;
+      overflow: hidden;
+      }
+      .filter-btn::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #d4af37;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+      }
+      .filter-btn.active::before {
+      width: 100%;
+      }
+      .cart-badge {
+      animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+      0%, 100% {
+      transform: scale(1);
+      }
+      50% {
+      transform: scale(1.1);
+      }
+      }
+      .fade-in {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: all 0.8s ease;
+      }
+      .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .loading-skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      }
+      @keyframes loading {
+      0% {
+      background-position: 200% 0;
+      }
+      100% {
+      background-position: -200% 0;
+      }
+      }
+      .sticky-nav {
+      backdrop-filter: blur(10px);
+      background: rgba(26, 26, 26, 0.95);
+      }
+    </style>
+  </head>
+  <body class="bg-white">
+    <header
+      class="fixed top-0 w-full z-50 bg-secondary text-white transition-all duration-300"
+      id="navbar"
+    >
+      <nav class="w-full px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-pacifico text-primary">LUXE</h1>
+          </div>
+          <div class="hidden lg:flex items-center space-x-8">
+            <a
+              href="#home"
+              class="hover:text-primary transition-colors duration-300"
+              >Home</a
+            >
+            <a
+              href="#shop"
+              class="hover:text-primary transition-colors duration-300"
+              >Shop</a
+            >
+            <a
+              href="#collections"
+              class="hover:text-primary transition-colors duration-300"
+              >Collections</a
+            >
+            <a
+              href="#about"
+              class="hover:text-primary transition-colors duration-300"
+              >About</a
+            >
+            <a
+              href="#contact"
+              class="hover:text-primary transition-colors duration-300"
+              >Contact</a
+            >
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              class="w-6 h-6 flex items-center justify-center hover:text-primary transition-colors duration-300"
+              id="search-btn"
+            >
+              <i class="ri-search-line ri-lg"></i>
+            </button>
+            <button
+              class="w-6 h-6 flex items-center justify-center hover:text-primary transition-colors duration-300 relative"
+              id="wishlist-btn"
+            >
+              <i class="ri-heart-line ri-lg"></i>
+              <span
+                class="absolute -top-2 -right-2 bg-primary text-secondary text-xs rounded-full w-5 h-5 flex items-center justify-center hidden"
+                id="wishlist-count"
+                >0</span
+              >
+            </button>
+            <button
+              class="w-6 h-6 flex items-center justify-center hover:text-primary transition-colors duration-300"
+              id="user-btn"
+            >
+              <i class="ri-user-line ri-lg"></i>
+            </button>
+            <button
+              class="relative w-6 h-6 flex items-center justify-center hover:text-primary transition-colors duration-300"
+              id="cart-btn"
+            >
+              <i class="ri-shopping-bag-line ri-lg"></i>
+              <span
+                class="absolute -top-2 -right-2 bg-primary text-secondary text-xs rounded-full w-5 h-5 flex items-center justify-center cart-badge"
+                id="cart-count"
+                >0</span
+              >
+            </button>
+            <button
+              class="lg:hidden w-6 h-6 flex items-center justify-center"
+              id="mobile-menu-btn"
+            >
+              <i class="ri-menu-line ri-lg"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div
+        class="mobile-menu fixed top-0 left-0 w-full h-screen bg-secondary z-40 lg:hidden"
+        id="mobile-menu"
+      >
+        <div
+          class="flex flex-col items-center justify-center h-full space-y-8 text-xl"
+        >
+          <a
+            href="#home"
+            class="hover:text-primary transition-colors duration-300 mobile-menu-link"
+            >Home</a
+          >
+          <a
+            href="#shop"
+            class="hover:text-primary transition-colors duration-300 mobile-menu-link"
+            >Shop</a
+          >
+          <a
+            href="#collections"
+            class="hover:text-primary transition-colors duration-300 mobile-menu-link"
+            >Collections</a
+          >
+          <a
+            href="#about"
+            class="hover:text-primary transition-colors duration-300 mobile-menu-link"
+            >About</a
+          >
+          <a
+            href="#contact"
+            class="hover:text-primary transition-colors duration-300 mobile-menu-link"
+            >Contact</a
+          >
+        </div>
+      </div>
+    </header>
+    <main>
+      <section
+        id="home"
+        class="relative h-screen parallax-bg"
+        style="background-image: url('https://readdy.ai/api/search-image?query=elegant%20modern%20fashion%20studio%20with%20premium%20clothing%20displayed%20on%20minimalist%20hangers%20against%20sophisticated%20black%20and%20white%20backdrop%20with%20dramatic%20lighting%20and%20clean%20architectural%20lines%20creating%20luxurious%20atmosphere&width=1920&height=1080&seq=hero1&orientation=landscape')"
+      >
+        <div
+          class="hero-overlay absolute inset-0 flex items-center justify-center"
+        >
+          <div class="text-center text-white px-4 max-w-4xl fade-in">
+            <h2
+              class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            >
+              Elevate Your Style
+            </h2>
+            <p class="text-xl sm:text-2xl mb-8 font-light">
+              Discover premium fashion that defines modern elegance and
+              sophisticated luxury
+            </p>
+            <button
+              class="bg-primary text-secondary px-8 py-4 text-lg font-semibold !rounded-button hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
+              onclick="document.getElementById('shop').scrollIntoView({behavior: 'smooth'})"
+            >
+              Shop Now
+            </button>
+          </div>
+        </div>
+      </section>
+      <section class="bg-secondary text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div class="counter">
+              <div
+                class="text-4xl sm:text-5xl font-bold text-primary mb-2"
+                data-target="10000"
+              >
+                0
+              </div>
+              <p class="text-lg font-light">Happy Customers</p>
+            </div>
+            <div class="counter">
+              <div
+                class="text-4xl sm:text-5xl font-bold text-primary mb-2"
+                data-target="500"
+              >
+                0
+              </div>
+              <p class="text-lg font-light">Premium Products</p>
+            </div>
+            <div class="counter">
+              <div
+                class="text-4xl sm:text-5xl font-bold text-primary mb-2"
+                data-target="50000"
+              >
+                0
+              </div>
+              <p class="text-lg font-light">Five Star Reviews</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="shop" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12 fade-in">
+            <h3 class="text-4xl sm:text-5xl font-bold mb-4">Our Collection</h3>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+              Curated pieces that blend contemporary design with timeless
+              elegance
+            </p>
+          </div>
+          <div class="flex justify-center mb-12 fade-in">
+            <div class="flex flex-wrap gap-4 bg-white p-2 rounded-lg shadow-sm">
+              <button
+                class="filter-btn px-6 py-3 text-sm font-semibold !rounded-button transition-all duration-300 active"
+                data-filter="all"
+              >
+                All Products
+              </button>
+              <button
+                class="filter-btn px-6 py-3 text-sm font-semibold !rounded-button transition-all duration-300"
+                data-filter="men"
+              >
+                Men
+              </button>
+              <button
+                class="filter-btn px-6 py-3 text-sm font-semibold !rounded-button transition-all duration-300"
+                data-filter="women"
+              >
+                Women
+              </button>
+              <button
+                class="filter-btn px-6 py-3 text-sm font-semibold !rounded-button transition-all duration-300"
+                data-filter="accessories"
+              >
+                Accessories
+              </button>
+            </div>
+          </div>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+            id="product-grid"
+          >
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="men"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=premium%20black%20cotton%20t-shirt%20on%20clean%20white%20background%20with%20minimal%20studio%20lighting%20showcasing%20fabric%20texture%20and%20modern%20fit%20professional%20product%20photography&width=400&height=500&seq=product1&orientation=portrait"
+                  alt="Premium Black Cotton T-Shirt"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">
+                  Premium Cotton T-Shirt
+                </h4>
+                <p class="text-2xl font-bold text-primary mb-4">$89</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="women"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=elegant%20silk%20blouse%20in%20cream%20color%20hanging%20on%20modern%20hanger%20against%20clean%20white%20studio%20background%20with%20soft%20lighting%20highlighting%20luxurious%20fabric%20drape&width=400&height=500&seq=product2&orientation=portrait"
+                  alt="Elegant Silk Blouse"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">Elegant Silk Blouse</h4>
+                <p class="text-2xl font-bold text-primary mb-4">$159</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="men"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=tailored%20navy%20blue%20blazer%20jacket%20displayed%20on%20wooden%20hanger%20against%20minimalist%20white%20background%20with%20professional%20studio%20lighting%20showing%20fine%20fabric%20details&width=400&height=500&seq=product3&orientation=portrait"
+                  alt="Tailored Navy Blazer"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">Tailored Navy Blazer</h4>
+                <p class="text-2xl font-bold text-primary mb-4">$299</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="women"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=flowing%20midi%20dress%20in%20deep%20burgundy%20color%20on%20dress%20form%20against%20clean%20white%20studio%20backdrop%20with%20elegant%20draping%20and%20sophisticated%20silhouette&width=400&height=500&seq=product4&orientation=portrait"
+                  alt="Flowing Midi Dress"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">Flowing Midi Dress</h4>
+                <p class="text-2xl font-bold text-primary mb-4">$189</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="accessories"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=luxury%20leather%20handbag%20in%20cognac%20brown%20positioned%20elegantly%20on%20white%20marble%20surface%20with%20soft%20studio%20lighting%20highlighting%20craftsmanship%20and%20premium%20materials&width=400&height=500&seq=product5&orientation=portrait"
+                  alt="Luxury Leather Handbag"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">
+                  Luxury Leather Handbag
+                </h4>
+                <p class="text-2xl font-bold text-primary mb-4">$349</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="men"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=premium%20denim%20jeans%20in%20dark%20indigo%20wash%20folded%20neatly%20on%20white%20background%20showcasing%20quality%20stitching%20and%20modern%20slim%20fit%20design%20with%20clean%20studio%20lighting&width=400&height=500&seq=product6&orientation=portrait"
+                  alt="Premium Denim Jeans"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">Premium Denim Jeans</h4>
+                <p class="text-2xl font-bold text-primary mb-4">$129</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="women"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=cashmere%20sweater%20in%20soft%20beige%20color%20displayed%20on%20elegant%20mannequin%20against%20pure%20white%20studio%20background%20with%20luxurious%20texture%20and%20sophisticated%20knit%20pattern&width=400&height=500&seq=product7&orientation=portrait"
+                  alt="Cashmere Sweater"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">Cashmere Sweater</h4>
+                <p class="text-2xl font-bold text-primary mb-4">$249</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+            <article
+              class="product-card bg-white rounded-lg shadow-sm overflow-hidden fade-in"
+              data-category="accessories"
+            >
+              <div class="relative">
+                <img
+                  src="https://readdy.ai/api/search-image?query=minimalist%20gold%20watch%20with%20leather%20strap%20positioned%20on%20clean%20white%20marble%20surface%20with%20elegant%20lighting%20showcasing%20precision%20craftsmanship%20and%20luxury%20details&width=400&height=500&seq=product8&orientation=portrait"
+                  alt="Minimalist Gold Watch"
+                  class="product-image w-full h-80 object-cover object-top"
+                />
+                <div
+                  class="product-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center space-x-4"
+                >
+                  <button
+                    class="wishlist-toggle w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-heart-line"></i>
+                  </button>
+                  <button
+                    class="quick-view w-10 h-10 flex items-center justify-center bg-white rounded-full hover:bg-primary hover:text-white transition-all duration-300"
+                  >
+                    <i class="ri-eye-line"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="p-6">
+                <h4 class="text-lg font-semibold mb-2">
+                  Minimalist Gold Watch
+                </h4>
+                <p class="text-2xl font-bold text-primary mb-4">$399</p>
+                <button
+                  class="add-to-cart w-full bg-secondary text-white py-3 !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 font-semibold whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section
+        id="collections"
+        class="relative py-32 parallax-bg"
+        style="background-image: url('https://readdy.ai/api/search-image?query=sophisticated%20fashion%20boutique%20interior%20with%20curated%20clothing%20collections%20displayed%20on%20modern%20racks%20against%20elegant%20black%20and%20white%20architectural%20backdrop%20with%20dramatic%20lighting&width=1920&height=1080&seq=collections1&orientation=landscape')"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/80 to-transparent"
+        ></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="max-w-2xl text-white fade-in">
+            <h3 class="text-4xl sm:text-5xl font-bold mb-6">
+              Featured Collections
+            </h3>
+            <p class="text-xl mb-8 font-light">
+              Explore our carefully curated seasonal collections that embody the
+              essence of contemporary luxury and timeless sophistication.
+            </p>
+            <button
+              class="bg-primary text-secondary px-8 py-4 text-lg font-semibold !rounded-button hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 whitespace-nowrap"
+              id="view-collections-btn"
+            >
+              View Collections
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="fade-in">
+              <h3 class="text-4xl sm:text-5xl font-bold mb-6">
+                Crafting Excellence Since 2010
+              </h3>
+              <p class="text-lg text-gray-600 mb-6">
+                At LUXE, we believe that true luxury lies in the perfect fusion
+                of exceptional craftsmanship, premium materials, and timeless
+                design. Our commitment to excellence has made us a trusted name
+                in contemporary fashion.
+              </p>
+              <p class="text-lg text-gray-600 mb-8">
+                Each piece in our collection is meticulously designed and
+                crafted to meet the highest standards of quality and style,
+                ensuring that you not only look exceptional but feel confident
+                in every moment.
+              </p>
+              <button
+                class="bg-secondary text-white px-8 py-4 text-lg font-semibold !rounded-button hover:bg-primary hover:text-secondary transition-all duration-300 whitespace-nowrap"
+                id="learn-more-btn"
+              >
+                Learn More
+              </button>
+            </div>
+            <div class="fade-in">
+              <img
+                src="https://readdy.ai/api/search-image?query=luxury%20fashion%20atelier%20workspace%20with%20designer%20sketches%20premium%20fabrics%20and%20tailoring%20tools%20arranged%20elegantly%20on%20marble%20table%20with%20soft%20natural%20lighting&width=600&height=600&seq=about1&orientation=squarish"
+                alt="Luxury Fashion Atelier"
+                class="w-full h-96 object-cover object-top rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer id="contact" class="bg-secondary text-white py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <h4 class="text-2xl font-pacifico text-primary mb-6">LUXE</h4>
+            <p class="text-gray-300 mb-6">
+              Elevating fashion through premium quality, exceptional design, and
+              uncompromising attention to detail.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-secondary transition-all duration-300"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-secondary transition-all duration-300"
+              >
+                <i class="ri-instagram-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-secondary transition-all duration-300"
+              >
+                <i class="ri-twitter-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-secondary transition-all duration-300"
+              >
+                <i class="ri-pinterest-fill"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h5 class="text-lg font-semibold mb-6">Customer Service</h5>
+            <ul class="space-y-3 text-gray-300">
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Contact Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Size Guide</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Shipping Info</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Returns</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >FAQ</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-lg font-semibold mb-6">Company</h5>
+            <ul class="space-y-3 text-gray-300">
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Careers</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Press</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Sustainability</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-primary transition-colors duration-300"
+                  >Privacy Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="text-lg font-semibold mb-6">Newsletter</h5>
+            <p class="text-gray-300 mb-4">
+              Subscribe to receive updates on new collections and exclusive
+              offers.
+            </p>
+            <div class="flex gap-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="flex-1 px-4 py-3 bg-gray-800 border-none rounded-button text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                id="newsletter-email"
+              />
+              <button
+                class="bg-primary text-secondary px-6 py-3 !rounded-button hover:bg-opacity-90 transition-all duration-300 font-semibold whitespace-nowrap"
+                id="newsletter-btn"
+              >
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-300 text-sm mb-4 md:mb-0">
+            &copy; 2024 LUXE. All rights reserved.
+          </p>
+          <div class="flex items-center space-x-6 text-sm text-gray-300">
+            <div class="flex items-center space-x-2">
+              <i class="ri-visa-fill text-2xl"></i>
+              <i class="ri-mastercard-fill text-2xl"></i>
+              <i class="ri-paypal-fill text-2xl"></i>
+              <i class="ri-apple-fill text-2xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script id="navigation-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.getElementById("navbar");
+        const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileMenuLinks = document.querySelectorAll(".mobile-menu-link");
+        window.addEventListener("scroll", function () {
+          if (window.scrollY > 100) {
+            navbar.classList.add("sticky-nav");
+          } else {
+            navbar.classList.remove("sticky-nav");
+          }
+        });
+        mobileMenuBtn.addEventListener("click", function () {
+          mobileMenu.classList.toggle("active");
+          const icon = this.querySelector("i");
+          if (mobileMenu.classList.contains("active")) {
+            icon.className = "ri-close-line ri-lg";
+          } else {
+            icon.className = "ri-menu-line ri-lg";
+          }
+        });
+        mobileMenuLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            mobileMenu.classList.remove("active");
+            mobileMenuBtn.querySelector("i").className = "ri-menu-line ri-lg";
+          });
+        });
+      });
+    </script>
+    <script id="counter-animation-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const counters = document.querySelectorAll(".counter");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("animate");
+                const counter = entry.target.querySelector("[data-target]");
+                const target = parseInt(counter.getAttribute("data-target"));
+                let current = 0;
+                const increment = target / 100;
+                const updateCounter = () => {
+                  if (current < target) {
+                    current += increment;
+                    counter.textContent = Math.floor(current).toLocaleString() + "+";
+                    requestAnimationFrame(updateCounter);
+                  } else {
+                    counter.textContent = target.toLocaleString() + "+";
+                  }
+                };
+                updateCounter();
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.5 },
+        );
+        counters.forEach((counter) => {
+          observer.observe(counter);
+        });
+      });
+    </script>
+    <script id="product-filter-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const productCards = document.querySelectorAll(".product-card");
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const filter = this.getAttribute("data-filter");
+            filterBtns.forEach((b) =>
+              b.classList.remove("active", "bg-primary", "text-secondary"),
+            );
+            this.classList.add("active", "bg-primary", "text-secondary");
+            productCards.forEach((card) => {
+              if (filter === "all" || card.getAttribute("data-category") === filter) {
+                card.style.display = "block";
+                setTimeout(() => {
+                  card.style.opacity = "1";
+                  card.style.transform = "translateY(0)";
+                }, 100);
+              } else {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(2rem)";
+                setTimeout(() => {
+                  card.style.display = "none";
+                }, 300);
+              }
+            });
+          });
+        });
+      });
+    </script>
+    <script id="cart-functionality-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        let cartCount = 0;
+        let cartItems = [];
+        const cartCountElement = document.getElementById("cart-count");
+        const cartBtn = document.getElementById("cart-btn");
+        const addToCartBtns = document.querySelectorAll(".add-to-cart");
+
+        addToCartBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const productCard = this.closest(".product-card");
+            const productName = productCard.querySelector("h4").textContent;
+            const productPrice = productCard.querySelector(".text-2xl").textContent;
+            const productImage = productCard.querySelector("img").src;
+            const priceValue = parseFloat(productPrice.replace("$", ""));
+
+            const existingItem = cartItems.find((item) => item.name === productName);
+            if (existingItem) {
+              existingItem.quantity += 1;
+            } else {
+              cartItems.push({
+                name: productName,
+                price: productPrice,
+                priceValue: priceValue,
+                image: productImage,
+                quantity: 1,
+              });
+            }
+
+            cartCount++;
+            cartCountElement.textContent = cartCount;
+            const originalText = this.textContent;
+            this.textContent = "Added!";
+            this.classList.add("bg-primary", "text-secondary");
+            setTimeout(() => {
+              this.textContent = originalText;
+              this.classList.remove("bg-primary", "text-secondary");
+            }, 1500);
+          });
+        });
+
+        cartBtn.addEventListener("click", function () {
+          showCartModal();
+        });
+
+        function showCartModal() {
+          const modal = document.createElement("div");
+          modal.className = "fixed inset-0 z-50";
+          modal.innerHTML = `
+      <div class="fixed inset-0 bg-black bg-opacity-50 cart-overlay"></div>
+      <div class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl transform translate-x-full transition-transform duration-300 cart-sidebar">
+      <div class="flex flex-col h-full">
+      <div class="flex items-center justify-between p-6 border-b">
+      <h3 class="text-xl font-bold">Shopping Cart (${cartCount})</h3>
+      <button class="close-cart w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-6">
+      ${
+        cartItems.length > 0
+          ? cartItems
+              .map(
+                (item, index) => `
+      <div class="cart-item flex items-center space-x-4 pb-6 border-b mb-6">
+      <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover object-top rounded">
+      <div class="flex-1">
+      <h4 class="font-semibold text-sm mb-1">${item.name}</h4>
+      <p class="text-primary font-bold">${item.price}</p>
+      <div class="flex items-center space-x-3 mt-2">
+      <button class="quantity-decrease w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100" data-index="${index}">
+      <i class="ri-subtract-line"></i>
+      </button>
+      <span class="quantity-display font-semibold">${item.quantity}</span>
+      <button class="quantity-increase w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100" data-index="${index}">
+      <i class="ri-add-line"></i>
+      </button>
+      </div>
+      </div>
+      <button class="remove-item text-gray-400 hover:text-red-500" data-index="${index}">
+      <i class="ri-delete-bin-line"></i>
+      </button>
+      </div>
+      `,
+              )
+              .join("")
+          : '<div class="text-center py-12"><i class="ri-shopping-bag-line ri-3x text-gray-300 mb-4"></i><p class="text-gray-500">Your cart is empty</p></div>'
+      }
+      </div>
+      ${
+        cartItems.length > 0
+          ? `
+      <div class="border-t p-6">
+      <div class="flex justify-between items-center mb-4">
+      <span class="text-lg font-semibold">Subtotal:</span>
+      <span class="text-xl font-bold text-primary">$${calculateSubtotal().toFixed(2)}</span>
+      </div>
+      <div class="space-y-3">
+      <button class="w-full bg-secondary text-white py-3 rounded-button font-semibold hover:bg-primary hover:text-secondary transition-all duration-300">
+      Checkout
+      </button>
+      <button class="w-full border border-gray-300 py-3 rounded-button font-semibold hover:bg-gray-50 continue-shopping">
+      Continue Shopping
+      </button>
+      </div>
+      </div>
+      `
+          : ""
+      }
+      </div>
+      </div>
+      `;
+
+          document.body.appendChild(modal);
+
+          setTimeout(() => {
+            modal.querySelector(".cart-sidebar").classList.remove("translate-x-full");
+          }, 10);
+
+          const closeBtn = modal.querySelector(".close-cart");
+          const overlay = modal.querySelector(".cart-overlay");
+          const continueShopping = modal.querySelector(".continue-shopping");
+
+          function closeModal() {
+            modal.querySelector(".cart-sidebar").classList.add("translate-x-full");
+            setTimeout(() => {
+              document.body.removeChild(modal);
+            }, 300);
+          }
+
+          closeBtn.addEventListener("click", closeModal);
+          overlay.addEventListener("click", closeModal);
+          if (continueShopping) {
+            continueShopping.addEventListener("click", closeModal);
+          }
+
+          const quantityDecrease = modal.querySelectorAll(".quantity-decrease");
+          const quantityIncrease = modal.querySelectorAll(".quantity-increase");
+          const removeItems = modal.querySelectorAll(".remove-item");
+
+          quantityDecrease.forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              if (cartItems[index].quantity > 1) {
+                cartItems[index].quantity -= 1;
+                cartCount--;
+                updateCartDisplay();
+              }
+            });
+          });
+
+          quantityIncrease.forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              cartItems[index].quantity += 1;
+              cartCount++;
+              updateCartDisplay();
+            });
+          });
+
+          removeItems.forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const index = parseInt(this.getAttribute("data-index"));
+              cartCount -= cartItems[index].quantity;
+              cartItems.splice(index, 1);
+              updateCartDisplay();
+            });
+          });
+
+          function updateCartDisplay() {
+            cartCountElement.textContent = cartCount;
+            closeModal();
+            setTimeout(() => showCartModal(), 50);
+          }
+        }
+
+        function calculateSubtotal() {
+          return cartItems.reduce(
+            (total, item) => total + item.priceValue * item.quantity,
+            0,
+          );
+        }
+      });
+    </script>
+    <script id="scroll-animations-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const fadeElements = document.querySelectorAll(".fade-in");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        fadeElements.forEach((element) => {
+          observer.observe(element);
+        });
+      });
+    </script>
+    <script id="search-functionality-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchBtn = document.getElementById("search-btn");
+        const body = document.body;
+        searchBtn.addEventListener("click", function () {
+          const searchOverlay = document.createElement("div");
+          searchOverlay.className =
+            "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center";
+          searchOverlay.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+      <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold">Search Products</h3>
+      <button class="close-search w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="relative mb-6">
+      <input type="text" placeholder="Search for products..." class="w-full px-4 py-3 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary text-sm" id="search-input">
+      <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary">
+      <i class="ri-search-line"></i>
+      </button>
+      </div>
+      <div class="text-sm text-gray-600">
+      <p>Popular searches: T-shirts, Dresses, Blazers, Accessories</p>
+      </div>
+      </div>
+      `;
+          body.appendChild(searchOverlay);
+          const closeBtn = searchOverlay.querySelector(".close-search");
+          const searchInput = searchOverlay.querySelector("#search-input");
+          closeBtn.addEventListener("click", () => {
+            body.removeChild(searchOverlay);
+          });
+          searchOverlay.addEventListener("click", (e) => {
+            if (e.target === searchOverlay) {
+              body.removeChild(searchOverlay);
+            }
+          });
+          searchInput.focus();
+          searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              const query = e.target.value.toLowerCase();
+              body.removeChild(searchOverlay);
+              filterProductsBySearch(query);
+            }
+          });
+        });
+        function filterProductsBySearch(query) {
+          const productCards = document.querySelectorAll(".product-card");
+          const filterBtns = document.querySelectorAll(".filter-btn");
+          filterBtns.forEach((btn) =>
+            btn.classList.remove("active", "bg-primary", "text-secondary"),
+          );
+          productCards.forEach((card) => {
+            const productName = card.querySelector("h4").textContent.toLowerCase();
+            if (productName.includes(query) || query === "") {
+              card.style.display = "block";
+              card.style.opacity = "1";
+              card.style.transform = "translateY(0)";
+            } else {
+              card.style.opacity = "0";
+              card.style.transform = "translateY(2rem)";
+              setTimeout(() => {
+                card.style.display = "none";
+              }, 300);
+            }
+          });
+          document.getElementById("shop").scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    </script>
+    <script id="wishlist-functionality-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        let wishlistItems = [];
+        const wishlistBtn = document.getElementById("wishlist-btn");
+        const wishlistCount = document.getElementById("wishlist-count");
+        const wishlistToggles = document.querySelectorAll(".wishlist-toggle");
+        function updateWishlistCount() {
+          if (wishlistItems.length > 0) {
+            wishlistCount.textContent = wishlistItems.length;
+            wishlistCount.classList.remove("hidden");
+          } else {
+            wishlistCount.classList.add("hidden");
+          }
+        }
+        wishlistToggles.forEach((btn, index) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const productCard = this.closest(".product-card");
+            const productName = productCard.querySelector("h4").textContent;
+            const productPrice = productCard.querySelector(".text-2xl").textContent;
+            const heartIcon = this.querySelector("i");
+            if (wishlistItems.find((item) => item.name === productName)) {
+              wishlistItems = wishlistItems.filter(
+                (item) => item.name !== productName,
+              );
+              heartIcon.className = "ri-heart-line";
+              this.classList.remove("bg-primary", "text-white");
+            } else {
+              wishlistItems.push({ name: productName, price: productPrice });
+              heartIcon.className = "ri-heart-fill";
+              this.classList.add("bg-primary", "text-white");
+            }
+            updateWishlistCount();
+          });
+        });
+        wishlistBtn.addEventListener("click", function () {
+          showWishlistModal();
+        });
+        function showWishlistModal() {
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center";
+          modal.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-lg w-full mx-4 max-h-96 overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold">My Wishlist</h3>
+      <button class="close-wishlist w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="wishlist-items">
+      ${
+        wishlistItems.length > 0
+          ? wishlistItems
+              .map(
+                (item) => `
+      <div class="flex justify-between items-center py-3 border-b">
+      <div>
+      <h4 class="font-semibold">${item.name}</h4>
+      <p class="text-primary font-bold">${item.price}</p>
+      </div>
+      <button class="bg-primary text-white px-4 py-2 rounded-button text-sm hover:bg-opacity-90">
+      Add to Cart
+      </button>
+      </div>
+      `,
+              )
+              .join("")
+          : '<p class="text-gray-600 text-center py-8">Your wishlist is empty</p>'
+      }
+      </div>
+      </div>
+      `;
+          document.body.appendChild(modal);
+          const closeBtn = modal.querySelector(".close-wishlist");
+          closeBtn.addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+              document.body.removeChild(modal);
+            }
+          });
+        }
+      });
+    </script>
+    <script id="user-account-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const userBtn = document.getElementById("user-btn");
+        userBtn.addEventListener("click", function () {
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center";
+          modal.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+      <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold">Account</h3>
+      <button class="close-account w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="space-y-4">
+      <button class="w-full bg-primary text-white py-3 rounded-button font-semibold hover:bg-opacity-90">
+      Sign In
+      </button>
+      <button class="w-full border border-gray-300 py-3 rounded-button font-semibold hover:bg-gray-50">
+      Create Account
+      </button>
+      <div class="text-center text-sm text-gray-600">
+      <a href="#" class="hover:text-primary">Forgot Password?</a>
+      </div>
+      </div>
+      </div>
+      `;
+          document.body.appendChild(modal);
+          const closeBtn = modal.querySelector(".close-account");
+          closeBtn.addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+              document.body.removeChild(modal);
+            }
+          });
+        });
+      });
+    </script>
+    <script id="quick-view-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const quickViewBtns = document.querySelectorAll(".quick-view");
+        quickViewBtns.forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const productCard = this.closest(".product-card");
+            const productName = productCard.querySelector("h4").textContent;
+            const productPrice = productCard.querySelector(".text-2xl").textContent;
+            const productImage = productCard.querySelector("img").src;
+            const modal = document.createElement("div");
+            modal.className =
+              "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center";
+            modal.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4">
+      <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold">Quick View</h3>
+      <button class="close-quick-view w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+      <img src="${productImage}" alt="${productName}" class="w-full h-64 object-cover object-top rounded-lg">
+      </div>
+      <div>
+      <h4 class="text-xl font-bold mb-4">${productName}</h4>
+      <p class="text-3xl font-bold text-primary mb-6">${productPrice}</p>
+      <div class="mb-6">
+      <label class="block text-sm font-semibold mb-2">Size</label>
+      <select class="w-full px-4 py-2 border border-gray-300 rounded-button">
+      <option>Select Size</option>
+      <option>XS</option>
+      <option>S</option>
+      <option>M</option>
+      <option>L</option>
+      <option>XL</option>
+      </select>
+      </div>
+      <button class="w-full bg-secondary text-white py-3 rounded-button font-semibold hover:bg-primary hover:text-secondary mb-4">
+      Add to Cart
+      </button>
+      <button class="w-full border border-gray-300 py-3 rounded-button font-semibold hover:bg-gray-50">
+      Add to Wishlist
+      </button>
+      </div>
+      </div>
+      </div>
+      `;
+            document.body.appendChild(modal);
+            const closeBtn = modal.querySelector(".close-quick-view");
+            closeBtn.addEventListener("click", () => {
+              document.body.removeChild(modal);
+            });
+            modal.addEventListener("click", (e) => {
+              if (e.target === modal) {
+                document.body.removeChild(modal);
+              }
+            });
+          });
+        });
+      });
+    </script>
+    <script id="additional-buttons-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const viewCollectionsBtn = document.getElementById("view-collections-btn");
+        const learnMoreBtn = document.getElementById("learn-more-btn");
+        const newsletterBtn = document.getElementById("newsletter-btn");
+        const newsletterEmail = document.getElementById("newsletter-email");
+        viewCollectionsBtn.addEventListener("click", function () {
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center";
+          modal.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold">Featured Collections</h3>
+      <button class="close-collections w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center">
+      <div class="bg-gray-100 h-32 rounded-lg mb-4 flex items-center justify-center">
+      <i class="ri-shirt-line ri-3x text-gray-400"></i>
+      </div>
+      <h4 class="font-bold mb-2">Spring Collection</h4>
+      <p class="text-gray-600 text-sm">Fresh styles for the new season</p>
+      </div>
+      <div class="text-center">
+      <div class="bg-gray-100 h-32 rounded-lg mb-4 flex items-center justify-center">
+      <i class="ri-user-3-line ri-3x text-gray-400"></i>
+      </div>
+      <h4 class="font-bold mb-2">Business Casual</h4>
+      <p class="text-gray-600 text-sm">Professional wear that impresses</p>
+      </div>
+      <div class="text-center">
+      <div class="bg-gray-100 h-32 rounded-lg mb-4 flex items-center justify-center">
+      <i class="ri-handbag-line ri-3x text-gray-400"></i>
+      </div>
+      <h4 class="font-bold mb-2">Accessories</h4>
+      <p class="text-gray-600 text-sm">Complete your look with premium accessories</p>
+      </div>
+      </div>
+      </div>
+      `;
+          document.body.appendChild(modal);
+          const closeBtn = modal.querySelector(".close-collections");
+          closeBtn.addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+              document.body.removeChild(modal);
+            }
+          });
+        });
+        learnMoreBtn.addEventListener("click", function () {
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center";
+          modal.innerHTML = `
+      <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold">About LUXE</h3>
+      <button class="close-about w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full">
+      <i class="ri-close-line ri-lg"></i>
+      </button>
+      </div>
+      <div class="space-y-4 text-gray-700">
+      <p>Founded in 2010, LUXE has been at the forefront of contemporary fashion, combining traditional craftsmanship with modern design sensibilities.</p>
+      <p>Our commitment to sustainability and ethical production practices ensures that every piece not only looks exceptional but also contributes to a better future for fashion.</p>
+      <p>With boutiques in major cities worldwide, we continue to expand our reach while maintaining the intimate, personalized service that defines the LUXE experience.</p>
+      <div class="grid grid-cols-2 gap-4 mt-6">
+      <div class="text-center">
+      <div class="text-2xl font-bold text-primary">50+</div>
+      <div class="text-sm">Countries Served</div>
+      </div>
+      <div class="text-center">
+      <div class="text-2xl font-bold text-primary">15</div>
+      <div class="text-sm">Years of Excellence</div>
+      </div>
+      </div>
+      </div>
+      </div>
+      `;
+          document.body.appendChild(modal);
+          const closeBtn = modal.querySelector(".close-about");
+          closeBtn.addEventListener("click", () => {
+            document.body.removeChild(modal);
+          });
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+              document.body.removeChild(modal);
+            }
+          });
+        });
+        newsletterBtn.addEventListener("click", function () {
+          const email = newsletterEmail.value.trim();
+          if (email && email.includes("@")) {
+            const originalText = this.textContent;
+            this.textContent = "Subscribed!";
+            this.classList.add("bg-green-500");
+            newsletterEmail.value = "";
+            setTimeout(() => {
+              this.textContent = originalText;
+              this.classList.remove("bg-green-500");
+            }, 2000);
+          } else {
+            this.textContent = "Invalid Email";
+            this.classList.add("bg-red-500");
+            setTimeout(() => {
+              this.textContent = "Subscribe";
+              this.classList.remove("bg-red-500");
+            }, 2000);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
